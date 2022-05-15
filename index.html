@@ -14,14 +14,17 @@
         </header>
         <section id="book-search">
             <form id="search-form">
+                <label for="search">What are you looking for?</label>
                 <input type="text" name="search" placeholder="Search Open Library" required>
-                <label for="search-type">What are you looking for?</label>
-                <select name="search-type">
-                    <option value="titles" selected>Title</option>
-                    <option value="authors">Author</option>
+                <select name="search-type" id="param">
+                    <option value="title" selected>Title</option>
+                    <option value="author">Author</option>
                 </select>
                 <input type="submit" value="search">
             </form>
+            <ul id="search-results">
+
+            </ul>
         </section>
         <section id="book-details">
 

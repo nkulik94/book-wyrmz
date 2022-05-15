@@ -14,6 +14,19 @@ header {
     left: 5px;
 }
 
+ul {
+    list-style: none;
+    padding-left: 0%;
+}
+
+li {
+    text-align: center;
+    border: 1px solid black;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin: 5px;
+}
+
 #book-details {
     width: 40%;
     border: 2px solid black;
