@@ -1,0 +1,29 @@
+body {
+    position: relative;
+}
+
+header {
+    margin: auto;
+    text-align: center;
+}
+
+#book-search {
+    width: 25%;
+    border: 2px solid black;
+    position: absolute;
+    left: 5px;
+}
+
+#book-details {
+    width: 40%;
+    border: 2px solid black;
+    position: absolute;
+    left: 30%;
+}
+
+#user-info {
+    width: 25%;
+    border: 2px solid black;
+    position: absolute;
+    right: 5px;
+}
