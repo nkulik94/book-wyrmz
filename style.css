@@ -1,5 +1,6 @@
-body {
+#main-site {
     position: relative;
+    height: fit-content;
 }
 
 header {
@@ -29,7 +30,6 @@ li {
 
 #book-details {
     width: 40%;
-    border: 2px solid black;
     position: absolute;
     left: 30%;
 }
@@ -39,4 +39,12 @@ li {
     border: 2px solid black;
     position: absolute;
     right: 5px;
+}
+
+#full-details {
+    border: 1px solid black;
+}
+
+.float {
+    float: left;
 }
