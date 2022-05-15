@@ -21,7 +21,17 @@ function getBooks() {
     fetch(`http://openlibrary.org/search.json?${searchBy.value}=${search.value}&limit=10`)
     .then(res => res.json())
     .then(books => {
-        //console.log(books)
+        let searchResults
+        searchResults = document.getElementById('search-results')
+        if (searchResults !== null) {
+            searchResults.remove()
+        }
+        searchResults = document.createElement('div')
+        searchResults.id = 'search-results'
+        const ul = document.createElement('ul')
+        ul.id = 'result-list'
+        searchResults.appendChild(ul)
+        document.getElementById('book-search').appendChild(searchResults)
         books.docs.map(book => renderBookResults(book))
     })
 }
@@ -38,12 +48,12 @@ function getBookDetails(url) {
         if (book.series !== undefined) {
             currentBook.series = book.series
         }
-        //console.log(currentBook)
+        console.log(currentBook)
     })
 }
 
 function renderBookResults(book) {
-    const searchResults = document.getElementById('search-results')
+    const resultList = document.getElementById('result-list')
     const li = document.createElement('li')
     const bookUrl = `https://openlibrary.org/books/${book.cover_edition_key}.json`
     let cover
@@ -56,7 +66,7 @@ function renderBookResults(book) {
         <p>${author}</p>
         <button id="details-for-${book.key}">See more about this book</button>  
     `
-    searchResults.appendChild(li)
+    resultList.appendChild(li)
     document.getElementById(`details-for-${book.key}`).addEventListener('click', () => {
         getBookDetails(bookUrl)
         return currentAuthor = author
