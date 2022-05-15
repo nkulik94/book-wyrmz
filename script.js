@@ -38,7 +38,7 @@ function getBookDetails(url) {
         if (book.series !== undefined) {
             currentBook.series = book.series
         }
-        console.log(currentBook)
+        //console.log(currentBook)
     })
 }
 
