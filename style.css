@@ -10,7 +10,6 @@ header {
 
 #book-search {
     width: 25%;
-    border: 2px solid black;
     position: absolute;
     left: 5px;
 }
@@ -45,6 +44,15 @@ li {
     border: 1px solid black;
 }
 
+input {
+    margin: 5px;
+}
+
+select {
+    margin: 5px;
+}
+
 .float {
     float: left;
+    margin-right: 10px;
 }

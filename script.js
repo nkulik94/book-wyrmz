@@ -58,7 +58,7 @@ function renderBookResults(book) {
     const li = document.createElement('li')
     const bookUrl = `https://openlibrary.org/books/${book.cover_edition_key}.json`
     let cover
-    book.cover_i === undefined ? cover = `<p>Sorry, no cover available for this book</p>` : cover = `<img src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg" class="search-cover-image">`
+    book.cover_i === undefined ? cover = `<p>Sorry, no cover available for this book</p>` : cover = `<img src="https://covers.openlibrary.org/b/id/${book.cover_i}-S.jpg" class="search-cover-image">`
     let author
     book.author_name.length > 1 ? author = `${book.author_name[0]} and ${book.author_name.length - 1} others` : author = book.author_name
     li.innerHTML = `
@@ -75,6 +75,9 @@ function renderBookResults(book) {
 }
 
 function renderDetailedBook(bookObj) {
+    if (document.getElementById('full-details') !== null) {
+        document.getElementById('full-details').remove()
+    }
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
     fullDetails.innerHTML = `
