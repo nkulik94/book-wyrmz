@@ -64,3 +64,8 @@ select {
 .search-previous-btns {
     display: none;
 }
+
+#error {
+    background-color: red;
+    color: white;
+}

@@ -217,10 +217,39 @@ function createAccount() {
         function success() {
             fetch('http://localhost:3000/users', new Config('POST', newUser))
             .then(res => res.json())
-            .then(user => console.log(user))
+            .then(user => {
+                renderBasicUserInfo(user)
+            })
         }
         res.length === 0 ? success() : error()
     })
+}
+
+document.getElementById('create-account-form').addEventListener('submit', e => {
+    e.preventDefault()
+    createAccount()
+})
+
+function renderBasicUserInfo(user) {
+    const div = document.createElement('div')
+    div.id = 'user-lists'
+    const h3 = document.createElement('h3')
+    h3.textContent = `Logged in as ${user.username}`
+    div.appendChild(h3)
+    const logOutBtn = document.createElement('button')
+    logOutBtn.textContent = 'Log Out'
+    div.appendChild(logOutBtn)
+    div.appendChild(document.createElement('br'))
+    const span = document.createElement('span')
+    const readBtn = document.createElement('button')
+    readBtn.textContent = 'Read'
+    span.appendChild(readBtn)
+    const unreadBtn = document.createElement('button')
+    unreadBtn.textContent = 'Want to Read'
+    span.appendChild(unreadBtn)
+    div.appendChild(span)
+    document.getElementById('user-info').appendChild(div)
+    document.getElementById('create-account-form').style.display = 'none'
 }
 
 function renderUserLists(books, id) {

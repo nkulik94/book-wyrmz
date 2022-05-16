@@ -5,6 +5,12 @@
       "username": "nkulik",
       "password": "nkulik",
       "id": 1
+    },
+    {
+      "name": "joe",
+      "username": "joe",
+      "password": "joe",
+      "id": 2
     }
   ],
   "books": []
