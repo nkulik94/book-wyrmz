@@ -22,14 +22,70 @@ let currentAuthor
 
 searchForm.addEventListener('submit', e => {
     e.preventDefault()
-    getBooks()
-    searchBy.value = ''
+    if (document.getElementById('results-header') !== null) {
+        document.getElementById('results-header').remove()
+    }
+    h3 = document.createElement('h3')
+    h3.className = searchInput.value.split(' ').join('-')
+    h3.id = 'results-header'
+    h3.textContent = `Results for ${searchInput.value}`
+    document.getElementById('book-search').appendChild(h3)
+    getBooks(0)
+    searchInput.value = ''
 })
 
-function getBooks() {
-    fetch(`http://openlibrary.org/search.json?${searchBy.value}=${searchInput.value}&limit=10`)
+function getBooks(offset) {
+    const searchFor = document.getElementById('results-header').className.split('-').join('+')
+    fetch(`http://openlibrary.org/search.json?${searchBy.value}=${searchFor}&limit=10&offset=${offset}`)
     .then(res => res.json())
     .then(books => {
+
+        // Code to create and activate buttons for page numbers
+        let pages = Math.ceil(books.numFound / 10)
+        if (pages > 1 && document.getElementsByClassName('active-btns').length === 0) {
+            const backButton = document.createElement('button')
+            backButton.textContent = 'See Previous'
+            document.getElementById('book-search').appendChild(backButton)
+            document.getElementById('book-search').appendChild(document.createElement('br'))
+            for (let i = 1; i <= pages; i++) {
+                searchResultPages(i)
+            }
+            document.getElementById('book-search').appendChild(document.createElement('br'))
+            const nextButton = document.createElement('button')
+            nextButton.textContent = 'See Next'
+            document.getElementById('book-search').appendChild(nextButton)
+            const pageBtns = Array.from(document.getElementsByClassName('result-btn'))
+            pageBtns.slice(0, 5).map(btn => btn.className = 'active-btns')
+            for (let i = 0; i < pages; i++) {
+                let oset = i * 10
+                pageBtns[i].addEventListener('click', (e) => {
+                    getBooks(oset)
+                    Array.from(document.getElementsByClassName('active-btns')).map(btn => btn.disabled = false)
+                    e.target.disabled = true
+                })
+            }
+            document.getElementsByClassName('active-btns')[0].disabled = true
+            pageBtns.slice(5).map(btn => btn.className = 'next-btns')
+            nextButton.addEventListener('click', () => {
+                document.getElementsByClassName('active-btns')[0].className = 'previous-btns'
+                document.getElementsByClassName('next-btns')[0].className = 'active-btns'
+                if (parseInt(document.getElementsByClassName('active-btns')[4].textContent, 0) === pageBtns.length) {
+                    nextButton.disabled = true
+                }
+                backButton.disabled = false
+            })
+            backButton.addEventListener('click', () => {
+                document.getElementsByClassName('active-btns')[4].className = 'next-btns'
+                document.getElementsByClassName('previous-btns')[document.getElementsByClassName('previous-btns').length - 1].className = 'active-btns'
+                if (parseInt(document.getElementsByClassName('active-btns')[0].textContent, 0) === 1) {
+                    backButton.disabled = true
+                }
+                nextButton.disabled = false
+            })
+            backButton.disabled = true
+        }
+
+
         let searchResults
         searchResults = document.getElementById('search-results')
         if (searchResults !== null) {
@@ -43,6 +99,13 @@ function getBooks() {
         document.getElementById('book-search').appendChild(searchResults)
         books.docs.map(book => renderBookResults(book))
     })
+}
+
+function searchResultPages(i) {
+    const btn = document.createElement('button')
+    btn.textContent = i
+    btn.className = 'result-btn'
+    document.getElementById('book-search').appendChild(btn)
 }
 
 function getBookDetails(url) {

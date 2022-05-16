@@ -56,3 +56,11 @@ select {
     float: left;
     margin-right: 10px;
 }
+
+.next-btns {
+    display: none;
+}
+
+.previous-btns {
+    display: none;
+}
