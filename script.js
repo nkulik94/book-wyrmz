@@ -1,3 +1,4 @@
+let currentUser
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
 const searchInput = document.querySelector('#search-input')
@@ -50,46 +51,6 @@ function getBooks(offset) {
         let pages = Math.ceil(books.numFound / 10)
         if (pages > 1 && document.getElementsByClassName('search-active-btns').length === 0) {
             pageButton(pages, 'book-search', 'search')
-            // const backButton = document.createElement('button')
-            // backButton.textContent = 'See Previous'
-            // document.getElementById('book-search').appendChild(backButton)
-            // document.getElementById('book-search').appendChild(document.createElement('br'))
-            // for (let i = 1; i <= pages; i++) {
-            //     searchResultPages(i)
-            // }
-            // document.getElementById('book-search').appendChild(document.createElement('br'))
-            // const nextButton = document.createElement('button')
-            // nextButton.textContent = 'See Next'
-            // document.getElementById('book-search').appendChild(nextButton)
-            // const pageBtns = Array.from(document.getElementsByClassName('result-btn'))
-            // pageBtns.slice(0, 5).map(btn => btn.className = 'active-btns')
-            // for (let i = 0; i < pages; i++) {
-            //     let oset = i * 10
-            //     pageBtns[i].addEventListener('click', (e) => {
-            //         getBooks(oset)
-            //         Array.from(document.getElementsByClassName('active-btns')).map(btn => btn.disabled = false)
-            //         e.target.disabled = true
-            //     })
-            // }
-            // document.getElementsByClassName('active-btns')[0].disabled = true
-            // pageBtns.slice(5).map(btn => btn.className = 'next-btns')
-            // nextButton.addEventListener('click', () => {
-            //     document.getElementsByClassName('active-btns')[0].className = 'previous-btns'
-            //     document.getElementsByClassName('next-btns')[0].className = 'active-btns'
-            //     if (parseInt(document.getElementsByClassName('active-btns')[4].textContent, 0) === pageBtns.length) {
-            //         nextButton.disabled = true
-            //     }
-            //     backButton.disabled = false
-            // })
-            // backButton.addEventListener('click', () => {
-            //     document.getElementsByClassName('active-btns')[4].className = 'next-btns'
-            //     document.getElementsByClassName('previous-btns')[document.getElementsByClassName('previous-btns').length - 1].className = 'active-btns'
-            //     if (parseInt(document.getElementsByClassName('active-btns')[0].textContent, 0) === 1) {
-            //         backButton.disabled = true
-            //     }
-            //     nextButton.disabled = false
-            // })
-            // backButton.disabled = true
         }
 
 
@@ -227,3 +188,37 @@ function renderDetailedBook(bookObj) {
     `
     document.getElementById('book-details').appendChild(fullDetails)
 }
+
+function renderUserLists(books, id) {
+    if (document.getElementById(id) !== null) {
+        document.getElementById(id).remove()
+    }
+    const ul = document.createElement('ul')
+    ul.id = id
+    books.map(book => {
+        let rating
+        book.ownRating === undefined ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.rating} out of 5`
+        const li = document.createElement('li')
+        li.className = `li-for-${id}`
+        li.innerHTML = `
+            <img src="${book.cover}">
+            <h4>${book.title}</h4>
+            <p>${book.author}</p>
+            <br>
+            <p>${rating}</p>
+            <button id="details-for-${book.title}">See more about this book</button>
+        `
+        ul.appendChild(li)
+    })
+    document.getElementById('user-info').appendChild(ul)
+}
+
+// function renderUserInfo(user) {
+//     currentUser = user
+//     document.getElementById('login').style.display = 'none'
+//     document.getElementById('create-account').style.display = 'none'
+//     const readBtn = document.createElement('button')
+//     readBtn.textContent = 'Read'
+//     document.getElementById('user-info').appendChild(readBtn)
+
+// }
