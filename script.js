@@ -1,12 +1,6 @@
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
-const searchInput = document.querySelector('search-input')
-class Book {
-    constructor(cover, title) {
-        this.cover = cover,
-        this.title = title
-    }
-}
+const searchInput = document.querySelector('#search-input')
 
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
@@ -33,7 +27,7 @@ searchForm.addEventListener('submit', e => {
 })
 
 function getBooks() {
-    fetch(`http://openlibrary.org/search.json?${searchBy.value}=${search.value}&limit=10`)
+    fetch(`http://openlibrary.org/search.json?${searchBy.value}=${searchInput.value}&limit=10`)
     .then(res => res.json())
     .then(books => {
         let searchResults
@@ -55,18 +49,22 @@ function getBookDetails(url) {
     fetch(url)
     .then(res => res.json())
     .then(book => {
-        currentBook = new Book(`https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`, book.title)
+        currentBook = {
+            cover: `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`,
+            title: book.title,
+            publisher: book.publishers[0],
+            publishDate: book.publish_date
+        }
         book.by_statement === undefined ? currentBook.author = currentAuthor : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
         if (typeof book.description === 'object') {
             currentBook.description = book.description.value
         }
-        currentBook.publisher = book.publishers[0]
-        currentBook.publishDate = book.publish_date
         if (book.series !== undefined) {
             currentBook.series = book.series
         }
         renderDetailedBook(currentBook)
+        return currentBook
     })
 }
 
