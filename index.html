@@ -21,14 +21,41 @@
                         <option value="author">Author</option>
                     </select>
                     <input type="text" name="search" placeholder="Search Open Library" required>
-                    <input type="submit" value="search">
+                    <input type="submit" value="Search">
                 </form>
             </section>
             <section id="book-details">
 
             </section>
             <section id="user-info">
-
+                <div id="login">
+                    <form id="login-form">
+                        <label for="login">Log In</label>
+                        <br>
+                        <input type="text" name="login" placeholder="username" required>
+                        <input type="password" name="password" placeholder="password" required>
+                        <input type="submit" value="Log In">
+                    </form>
+                    <span>Not yet a Book Wyrm? <button class="toggle-forms">Create Account</button></span>
+                </div>
+                <div id="create-account">
+                    <form id="create-account-form">
+                        <label for="name">Enter your name</label>
+                        <br>
+                        <input type="text" name="name" placeholder="Your name" required>
+                        <br>
+                        <label for="username">Choose a username</label>
+                        <br>
+                        <input type="text" name="username" placeholder="Your username" required>
+                        <br>
+                        <label for="password">Create a password</label>
+                        <br>
+                        <input type="password" name="password" placeholder="Your password" required>
+                        <br>
+                        <input type="submit" value="Create account">
+                    </form>
+                    <span>Have an account? <button class="toggle-forms">Log In</button></span>
+                </div>
             </section>
         </div>
     </body>

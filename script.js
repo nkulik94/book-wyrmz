@@ -40,10 +40,12 @@ function getBookDetails(url) {
     fetch(url)
     .then(res => res.json())
     .then(book => {
-        console.log('book info',book)
         currentBook = new Book(`https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`, book.title)
         book.by_statement === undefined ? currentBook.author = currentAuthor : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
+        if (typeof book.description === 'object') {
+            currentBook.description = book.description.value
+        }
         currentBook.publisher = book.publishers[0]
         currentBook.publishDate = book.publish_date
         if (book.series !== undefined) {
@@ -80,6 +82,8 @@ function renderDetailedBook(bookObj) {
     }
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
+    let series
+    bookObj.series === undefined ? series = 'N/A' : series = bookObj.series
     fullDetails.innerHTML = `
         <img class="float" src="${bookObj.cover}" alt="Cover for ${bookObj.title}">
         <h2>${bookObj.title}</h2>
@@ -87,9 +91,11 @@ function renderDetailedBook(bookObj) {
         <h5>Published by: ${bookObj.publisher}</h5>
         <h5>Published: ${bookObj.publishDate}</h5>
         <br>
-        <p>Series: ${bookObj.series}</p>
+        <p>Series: ${series}</p>
         <br>
-        <p>Description: ${bookObj.description}</p>
+        <p>Description:
+        <br>
+        ${bookObj.description}</p>
     `
     document.getElementById('book-details').appendChild(fullDetails)
 }
