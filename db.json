@@ -13,10 +13,16 @@
       "id": 2
     },
     {
-      "name": "Osama Bin Laden",
-      "username": "binny",
-      "password": "binny",
+      "name": "john",
+      "username": "john",
+      "password": "john",
       "id": 3
+    },
+    {
+      "name": "james",
+      "username": "james",
+      "password": "ja,es",
+      "id": 4
     }
   ],
   "books": []

@@ -2,7 +2,8 @@ let currentUser
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
 const searchInput = document.querySelector('#search-input')
-document.getElementById('error').style.display = 'none'
+document.getElementById('create-error').style.display = 'none'
+document.getElementById('login-error').style.display = 'none'
 class Config {
     constructor(method, body) {
         this.method = method,
@@ -206,28 +207,14 @@ function createAccount() {
         username: document.getElementById('new-username').value,
         password: document.getElementById('new-password').value
     }
-    fetchUsers(newUser)
-    // fetch(`http://localhost:3000/users?username=${newUser.username}`)
-    // .then(res => res.json())
-    // .then((res) => {
-    //     function success() {
-    //         fetch('http://localhost:3000/users', new Config('POST', newUser))
-    //         .then(res => res.json())
-    //         .then(user => {
-    //             renderBasicUserInfo(user)
-    //             document.getElementById('read-btn').disabled = true
-    //             document.getElementById('unread-btn').disabled = true
-    //         })
-    //     }
-    //     res.length === 0 ? success() : error()
-    // })
+    fetchUsers(newUser, 0, 'POST')
 }
 
-function fetchUsers(user) {
+function fetchUsers(user, i, method) {
     fetch(`http://localhost:3000/users?username=${user.username}`)
     .then(res => res.json())
     .then((res) => {
-        res.length === 0 ? success(user) : error()
+        res.length === i ? success(user, method) : error(method)
     })
 }
 
@@ -236,23 +223,22 @@ document.getElementById('create-account-form').addEventListener('submit', e => {
     createAccount()
 })
 
-function error() {
-    const error = document.getElementById('error')
+function error(method) {
+    let error 
+    method === 'POST' ? error = document.getElementById('create-error') : error = document.getElementById('login-error')
     error.style.display = ''
     setTimeout(() => error.style.display = "none", 5000)
 }
 
-function success(user) {
-    fetch('http://localhost:3000/users', new Config('POST', user))
+function success(user, method) {
+    fetch('http://localhost:3000/users', new Config(method, user))
     .then(res => res.json())
     .then(user => {
-        renderBasicUserInfo(user)
-        document.getElementById('read-btn').disabled = true
-        document.getElementById('unread-btn').disabled = true
+        renderBasicUserInfo(user, method)
     })
 }
 
-function renderBasicUserInfo(user) {
+function renderBasicUserInfo(user, method) {
     const div = document.createElement('div')
     div.id = 'user-lists'
     const h3 = document.createElement('h3')
@@ -273,7 +259,9 @@ function renderBasicUserInfo(user) {
     span.appendChild(unreadBtn)
     div.appendChild(span)
     document.getElementById('user-info').appendChild(div)
-    document.getElementById('create-account-form').style.display = 'none'
+    document.getElementById('login').style.display = 'none'
+    document.getElementById('create-account').style.display = 'none'
+    readBtn.disabled = true
 }
 
 function renderUserLists(books, id) {
