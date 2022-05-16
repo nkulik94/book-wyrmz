@@ -25,6 +25,12 @@ searchForm.addEventListener('submit', e => {
     if (document.getElementById('results-header') !== null) {
         document.getElementById('results-header').remove()
     }
+    if (document.getElementsByClassName('search-switch').length === 2) {
+        Array.from(document.getElementsByClassName('search-switch')).map(btn => btn.remove())
+        Array.from(document.getElementsByClassName('search-active-btns')).map(btn => btn.remove())
+        Array.from(document.getElementsByClassName('search-next-btns')).map(btn => btn.remove())
+        Array.from(document.getElementsByClassName('search-previous-btns')).map(btn => btn.remove())
+    }
     h3 = document.createElement('h3')
     h3.className = searchInput.value.split(' ').join('-')
     h3.id = 'results-header'
@@ -42,47 +48,48 @@ function getBooks(offset) {
 
         // Code to create and activate buttons for page numbers
         let pages = Math.ceil(books.numFound / 10)
-        if (pages > 1 && document.getElementsByClassName('active-btns').length === 0) {
-            const backButton = document.createElement('button')
-            backButton.textContent = 'See Previous'
-            document.getElementById('book-search').appendChild(backButton)
-            document.getElementById('book-search').appendChild(document.createElement('br'))
-            for (let i = 1; i <= pages; i++) {
-                searchResultPages(i)
-            }
-            document.getElementById('book-search').appendChild(document.createElement('br'))
-            const nextButton = document.createElement('button')
-            nextButton.textContent = 'See Next'
-            document.getElementById('book-search').appendChild(nextButton)
-            const pageBtns = Array.from(document.getElementsByClassName('result-btn'))
-            pageBtns.slice(0, 5).map(btn => btn.className = 'active-btns')
-            for (let i = 0; i < pages; i++) {
-                let oset = i * 10
-                pageBtns[i].addEventListener('click', (e) => {
-                    getBooks(oset)
-                    Array.from(document.getElementsByClassName('active-btns')).map(btn => btn.disabled = false)
-                    e.target.disabled = true
-                })
-            }
-            document.getElementsByClassName('active-btns')[0].disabled = true
-            pageBtns.slice(5).map(btn => btn.className = 'next-btns')
-            nextButton.addEventListener('click', () => {
-                document.getElementsByClassName('active-btns')[0].className = 'previous-btns'
-                document.getElementsByClassName('next-btns')[0].className = 'active-btns'
-                if (parseInt(document.getElementsByClassName('active-btns')[4].textContent, 0) === pageBtns.length) {
-                    nextButton.disabled = true
-                }
-                backButton.disabled = false
-            })
-            backButton.addEventListener('click', () => {
-                document.getElementsByClassName('active-btns')[4].className = 'next-btns'
-                document.getElementsByClassName('previous-btns')[document.getElementsByClassName('previous-btns').length - 1].className = 'active-btns'
-                if (parseInt(document.getElementsByClassName('active-btns')[0].textContent, 0) === 1) {
-                    backButton.disabled = true
-                }
-                nextButton.disabled = false
-            })
-            backButton.disabled = true
+        if (pages > 1 && document.getElementsByClassName('search-active-btns').length === 0) {
+            pageButton(pages, 'book-search', 'search')
+            // const backButton = document.createElement('button')
+            // backButton.textContent = 'See Previous'
+            // document.getElementById('book-search').appendChild(backButton)
+            // document.getElementById('book-search').appendChild(document.createElement('br'))
+            // for (let i = 1; i <= pages; i++) {
+            //     searchResultPages(i)
+            // }
+            // document.getElementById('book-search').appendChild(document.createElement('br'))
+            // const nextButton = document.createElement('button')
+            // nextButton.textContent = 'See Next'
+            // document.getElementById('book-search').appendChild(nextButton)
+            // const pageBtns = Array.from(document.getElementsByClassName('result-btn'))
+            // pageBtns.slice(0, 5).map(btn => btn.className = 'active-btns')
+            // for (let i = 0; i < pages; i++) {
+            //     let oset = i * 10
+            //     pageBtns[i].addEventListener('click', (e) => {
+            //         getBooks(oset)
+            //         Array.from(document.getElementsByClassName('active-btns')).map(btn => btn.disabled = false)
+            //         e.target.disabled = true
+            //     })
+            // }
+            // document.getElementsByClassName('active-btns')[0].disabled = true
+            // pageBtns.slice(5).map(btn => btn.className = 'next-btns')
+            // nextButton.addEventListener('click', () => {
+            //     document.getElementsByClassName('active-btns')[0].className = 'previous-btns'
+            //     document.getElementsByClassName('next-btns')[0].className = 'active-btns'
+            //     if (parseInt(document.getElementsByClassName('active-btns')[4].textContent, 0) === pageBtns.length) {
+            //         nextButton.disabled = true
+            //     }
+            //     backButton.disabled = false
+            // })
+            // backButton.addEventListener('click', () => {
+            //     document.getElementsByClassName('active-btns')[4].className = 'next-btns'
+            //     document.getElementsByClassName('previous-btns')[document.getElementsByClassName('previous-btns').length - 1].className = 'active-btns'
+            //     if (parseInt(document.getElementsByClassName('active-btns')[0].textContent, 0) === 1) {
+            //         backButton.disabled = true
+            //     }
+            //     nextButton.disabled = false
+            // })
+            // backButton.disabled = true
         }
 
 
@@ -101,11 +108,56 @@ function getBooks(offset) {
     })
 }
 
-function searchResultPages(i) {
+function pageButton(pages, id, list) {
+    const backButton = document.createElement('button')
+    backButton.textContent = 'See Previous'
+    backButton.className = `${list}-switch`
+    document.getElementById('book-search').appendChild(backButton)
+    document.getElementById('book-search').appendChild(document.createElement('br'))
+    for (let i = 1; i <= pages; i++) {
+        searchResultPages(i, id)
+    }
+    document.getElementById('book-search').appendChild(document.createElement('br'))
+    const nextButton = document.createElement('button')
+    nextButton.textContent = 'See Next'
+    nextButton.className = `${list}-switch`
+    document.getElementById('book-search').appendChild(nextButton)
+    const pageBtns = Array.from(document.getElementsByClassName('result-btn'))
+    pageBtns.slice(0, 5).map(btn => btn.className = `${list}-active-btns`)
+    for (let i = 0; i < pages; i++) {
+        let oset = i * 10
+        pageBtns[i].addEventListener('click', (e) => {
+            getBooks(oset)
+            Array.from(document.getElementsByClassName(`${list}-active-btns`)).map(btn => btn.disabled = false)
+            e.target.disabled = true
+        })
+    }
+    document.getElementsByClassName(`${list}-active-btns`)[0].disabled = true
+    pageBtns.slice(5).map(btn => btn.className = `${list}-next-btns`)
+    nextButton.addEventListener('click', () => {
+        document.getElementsByClassName(`${list}-active-btns`)[0].className = `${list}-previous-btns`
+        document.getElementsByClassName(`${list}-next-btns`)[0].className = `${list}-active-btns`
+        if (parseInt(document.getElementsByClassName(`${list}-active-btns`)[4].textContent, 0) === pageBtns.length) {
+            nextButton.disabled = true
+        }
+        backButton.disabled = false
+    })
+    backButton.addEventListener('click', () => {
+        document.getElementsByClassName(`${list}-active-btns`)[4].className = `${list}-next-btns`
+        document.getElementsByClassName(`${list}-previous-btns`)[document.getElementsByClassName(`${list}-previous-btns`).length - 1].className = `${list}-active-btns`
+        if (parseInt(document.getElementsByClassName(`${list}-active-btns`)[0].textContent, 0) === 1) {
+            backButton.disabled = true
+        }
+        nextButton.disabled = false
+    })
+    backButton.disabled = true
+}
+
+function searchResultPages(i, id) {
     const btn = document.createElement('button')
     btn.textContent = i
     btn.className = 'result-btn'
-    document.getElementById('book-search').appendChild(btn)
+    document.getElementById(id).appendChild(btn)
 }
 
 function getBookDetails(url) {
