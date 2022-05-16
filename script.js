@@ -2,6 +2,17 @@ let currentUser
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
 const searchInput = document.querySelector('#search-input')
+document.getElementById('error').style.display = 'none'
+class Config {
+    constructor(method, body) {
+        this.method = method,
+        this.headers = {
+            "Content-type": "application/json",
+            "Accept": "application/json"
+        },
+        this.body = JSON.stringify(body)
+    }
+}
 
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
@@ -187,6 +198,29 @@ function renderDetailedBook(bookObj) {
         ${bookObj.description}</p>
     `
     document.getElementById('book-details').appendChild(fullDetails)
+}
+
+function createAccount() {
+    const newUser = {
+        name: document.getElementById('name').value,
+        username: document.getElementById('new-username').value,
+        password: document.getElementById('new-password').value
+    }
+    fetch(`http://localhost:3000/users?username=${newUser.username}`)
+    .then(res => res.json())
+    .then((res) => {
+        function error() {
+            const error = document.getElementById('error')
+            error.style.display = ''
+            setTimeout(() => error.style.display = "none", 5000)
+        }
+        function success() {
+            fetch('http://localhost:3000/users', new Config('POST', newUser))
+            .then(res => res.json())
+            .then(user => console.log(user))
+        }
+        res.length === 0 ? success() : error()
+    })
 }
 
 function renderUserLists(books, id) {

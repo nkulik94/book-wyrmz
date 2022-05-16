@@ -1,8 +1,11 @@
 {
-    "users": [
-        
-    ],
-    "books": [
-        
-    ]
+  "users": [
+    {
+      "name": "Naftali Kulik",
+      "username": "nkulik",
+      "password": "nkulik",
+      "id": 1
+    }
+  ],
+  "books": []
 }
