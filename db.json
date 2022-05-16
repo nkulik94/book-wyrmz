@@ -5,19 +5,25 @@
       "username": "nkulik",
       "password": "nkulik",
       "id": 1
-    },
-    {
-      "name": "joe",
-      "username": "joe",
-      "password": "joe",
-      "id": 2
-    },
-    {
-      "name": "chavi",
-      "username": "chavik",
-      "password": "chavik",
-      "id": 3
     }
   ],
-  "books": []
+  "books": [
+    {
+      "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+      "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+      "publisher": "Tor Books",
+      "publishDate": "August 22, 2006",
+      "author": [
+        "Steven Erikson"
+      ],
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (4)"
+      ],
+      "readBy": [
+        "nkulik"
+      ],
+      "id": 1
+    }
+  ]
 }

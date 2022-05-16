@@ -153,6 +153,9 @@ function getBookDetails(url) {
             currentBook.series = book.series
         }
         renderDetailedBook(currentBook)
+        if (currentBook.readBy === undefined) {
+            currentBook.readBy = []
+        }
         return currentBook
     })
 }
@@ -200,6 +203,46 @@ function renderDetailedBook(bookObj) {
         ${bookObj.description}</p>
     `
     document.getElementById('book-details').appendChild(fullDetails)
+    fullDetails.appendChild(document.createElement('br'))
+    const rating = document.createElement('h5')
+    rating.id = 'rating'
+    currentBook.rating === undefined ? rating.textContent = 'Average Rating: This book has not been rated by any bookworms' : `Average Rating: ${currentBook.rating.average} out of 5`
+    fullDetails.appendChild(rating)
+    fullDetails.appendChild(document.createElement('br'))
+    const rateBtn = document.createElement('button')
+    rateBtn.id = 'rate-btn'
+    rateBtn.textContent = 'Rate this book'
+    fullDetails.appendChild(rateBtn)
+    const markRead = document.createElement('button')
+    markRead.id = 'mark-read'
+    markRead.textContent = 'Read'
+    fullDetails.appendChild(markRead)
+    markRead.addEventListener('click', () => {
+        currentBook.readBy.push(currentUser.username)
+        if (currentBook.id === undefined) {
+            fetch(`http://localhost:3000/books`, new Config('POST', currentBook))
+            .then(res => res.json())
+            .then(book => {
+                renderDetailedBook(book)
+                currentBook = book
+                currentUser.readList.push(currentBook.id)
+                return currentBook
+            })
+        } else {
+            fetch(`http://localhost:3000/books/${currentBook.id}`, new Config("PATCH", currentBook))
+            .then(res => res.json())
+            .then(book => {
+                currentBook = book
+                renderDetailedBook(currentBook)
+                currentUser.readList.push(currentBook.id)
+                return currentBook
+            })
+        }
+    })
+    const toRead = document.createElement('button')
+    toRead.id = 'to-read'
+    toRead.textContent = "Want to read"
+    fullDetails.appendChild(toRead)
 }
 
 function createAccount() {
@@ -253,10 +296,18 @@ function success(user, method) {
         .then(res => res.json())
         .then(user => {
             renderBasicUserInfo(user)
+            currentUser = user
+            currentUser.readList = []
+            return currentUser
         })
         }
     function returnUser() {
         renderBasicUserInfo(user)
+        currentUser = user
+        if (currentUser.readList === undefined) {
+            currentUser.readList = []
+        }
+        return currentUser
     }
     method === 'POST' ? newUser() : returnUser()
 }
@@ -314,6 +365,9 @@ function renderBasicUserInfo(user) {
         unreadBtn.disabled = false
     })
     readBtn.disabled = true
+    if (currentBook !== undefined) {
+        renderDetailedBook(currentBook)
+    }
 }
 
 function renderUserLists(books, id) {
