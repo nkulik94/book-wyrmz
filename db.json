@@ -1,6 +1,10 @@
 {
     "users": [
-
+        {
+            "id": 1,
+            "username": "nkulik",
+            "name": "Naftali Kulik"
+        }
     ],
     "books": [
         
