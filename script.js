@@ -1,4 +1,7 @@
+//Variable declarations and other "pre-game" expressions
 let currentUser
+let currentBook
+let currentAuthor
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
 const searchInput = document.querySelector('#search-input')
@@ -15,11 +18,11 @@ class Config {
     }
 }
 
+//event listener to switch between login and create account forms
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
 })
 document.getElementById('create-account').style.display = 'none'
-
 function toggleForms(e) {
     if (e.target.textContent === 'Create Account') {
         document.getElementById('login').style.display = 'none'
@@ -30,8 +33,6 @@ function toggleForms(e) {
     }
 }
 
-let currentBook
-let currentAuthor
 
 searchForm.addEventListener('submit', e => {
     e.preventDefault()
@@ -280,9 +281,38 @@ function renderBasicUserInfo(user) {
     unreadBtn.id = 'unread-btn'
     span.appendChild(unreadBtn)
     div.appendChild(span)
-    document.getElementById('user-info').appendChild(div)
+    document.getElementById('login-header').appendChild(div)
     document.getElementById('login').style.display = 'none'
     document.getElementById('create-account').style.display = 'none'
+    if (user.readList === undefined) {
+        const emptyRead = document.createElement('p')
+        emptyRead.textContent = 'You haven\'t put any books on your Read List yet!'
+        emptyRead.id = 'read-list'
+        document.getElementById('read').appendChild(emptyRead)
+    } else {
+        renderUserLists(user.readList, 'read-list')
+    }
+    if (user.wishList === undefined) {
+        const emptyWish = document.createElement('p')
+        emptyWish.textContent = 'You haven\'t selected any books that you want to read!'
+        emptyWish.id = 'wish-list'
+        document.getElementById('unread').appendChild(emptyWish)
+    } else {
+        renderUserLists(user.wishList, 'wish-list')
+    }
+    document.getElementById('unread').style.display = 'none'
+    unreadBtn.addEventListener('click', () => {
+        document.getElementById('unread').style.display = ''
+        document.getElementById('read').style.display = 'none'
+        unreadBtn.disabled = true
+        readBtn.disabled = false
+    })
+    readBtn.addEventListener('click', () => {
+        document.getElementById('read').style.display = ''
+        document.getElementById('unread').style.display = 'none'
+        readBtn.disabled = true
+        unreadBtn.disabled = false
+    })
     readBtn.disabled = true
 }
 
@@ -309,13 +339,3 @@ function renderUserLists(books, id) {
     })
     document.getElementById('user-info').appendChild(ul)
 }
-
-// function renderUserInfo(user) {
-//     currentUser = user
-//     document.getElementById('login').style.display = 'none'
-//     document.getElementById('create-account').style.display = 'none'
-//     const readBtn = document.createElement('button')
-//     readBtn.textContent = 'Read'
-//     document.getElementById('user-info').appendChild(readBtn)
-
-// }
