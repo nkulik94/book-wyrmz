@@ -210,13 +210,29 @@ function createAccount() {
     fetchUsers(newUser, 0, 'POST')
 }
 
+function logIn() {
+    const user = {
+        username: document.getElementById('username').value,
+        password: document.getElementById('password').value
+    }
+    fetchUsers(user, 1, 'GET')
+}
+
 function fetchUsers(user, i, method) {
     fetch(`http://localhost:3000/users?username=${user.username}`)
     .then(res => res.json())
     .then((res) => {
+        if (res.length === 1 && res[0].password !== user.password) {
+            error(method)
+        }
         res.length === i ? success(user, method) : error(method)
     })
 }
+
+document.getElementById('login-form').addEventListener('submit', e => {
+    e.preventDefault()
+    logIn()
+})
 
 document.getElementById('create-account-form').addEventListener('submit', e => {
     e.preventDefault()
@@ -231,14 +247,20 @@ function error(method) {
 }
 
 function success(user, method) {
-    fetch('http://localhost:3000/users', new Config(method, user))
-    .then(res => res.json())
-    .then(user => {
-        renderBasicUserInfo(user, method)
-    })
+    function newUser() {
+        fetch('http://localhost:3000/users', new Config(method, user))
+        .then(res => res.json())
+        .then(user => {
+            renderBasicUserInfo(user)
+        })
+        }
+    function returnUser() {
+        renderBasicUserInfo(user)
+    }
+    method === 'POST' ? newUser() : returnUser()
 }
 
-function renderBasicUserInfo(user, method) {
+function renderBasicUserInfo(user) {
     const div = document.createElement('div')
     div.id = 'user-lists'
     const h3 = document.createElement('h3')

@@ -13,16 +13,10 @@
       "id": 2
     },
     {
-      "name": "john",
-      "username": "john",
-      "password": "john",
+      "name": "chavi",
+      "username": "chavik",
+      "password": "chavik",
       "id": 3
-    },
-    {
-      "name": "james",
-      "username": "james",
-      "password": "ja,es",
-      "id": 4
     }
   ],
   "books": []
