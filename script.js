@@ -1,6 +1,6 @@
 const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
-const search = document.querySelector('input')
+const searchInput = document.querySelector('search-input')
 class Book {
     constructor(cover, title) {
         this.cover = cover,
@@ -29,7 +29,7 @@ let currentAuthor
 searchForm.addEventListener('submit', e => {
     e.preventDefault()
     getBooks()
-    search.value = ''
+    searchBy.value = ''
 })
 
 function getBooks() {
