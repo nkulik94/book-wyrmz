@@ -1,4 +1,4 @@
-const form = document.getElementById('search-form')
+const searchForm = document.getElementById('search-form')
 const searchBy = document.getElementById('param')
 const search = document.querySelector('input')
 class Book {
@@ -8,10 +8,25 @@ class Book {
     }
 }
 
+Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
+    btn.addEventListener('click', e => toggleForms(e))
+})
+document.getElementById('create-account').style.display = 'none'
+
+function toggleForms(e) {
+    if (e.target.textContent === 'Create Account') {
+        document.getElementById('login').style.display = 'none'
+        document.getElementById('create-account').style.display = ''
+    } else {
+        document.getElementById('login').style.display = ''
+        document.getElementById('create-account').style.display = 'none'
+    }
+}
+
 let currentBook
 let currentAuthor
 
-form.addEventListener('submit', e => {
+searchForm.addEventListener('submit', e => {
     e.preventDefault()
     getBooks()
     search.value = ''
