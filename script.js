@@ -206,22 +206,28 @@ function createAccount() {
         username: document.getElementById('new-username').value,
         password: document.getElementById('new-password').value
     }
-    fetch(`http://localhost:3000/users?username=${newUser.username}`)
+    fetchUsers(newUser)
+    // fetch(`http://localhost:3000/users?username=${newUser.username}`)
+    // .then(res => res.json())
+    // .then((res) => {
+    //     function success() {
+    //         fetch('http://localhost:3000/users', new Config('POST', newUser))
+    //         .then(res => res.json())
+    //         .then(user => {
+    //             renderBasicUserInfo(user)
+    //             document.getElementById('read-btn').disabled = true
+    //             document.getElementById('unread-btn').disabled = true
+    //         })
+    //     }
+    //     res.length === 0 ? success() : error()
+    // })
+}
+
+function fetchUsers(user) {
+    fetch(`http://localhost:3000/users?username=${user.username}`)
     .then(res => res.json())
     .then((res) => {
-        function error() {
-            const error = document.getElementById('error')
-            error.style.display = ''
-            setTimeout(() => error.style.display = "none", 5000)
-        }
-        function success() {
-            fetch('http://localhost:3000/users', new Config('POST', newUser))
-            .then(res => res.json())
-            .then(user => {
-                renderBasicUserInfo(user)
-            })
-        }
-        res.length === 0 ? success() : error()
+        res.length === 0 ? success(user) : error()
     })
 }
 
@@ -229,6 +235,22 @@ document.getElementById('create-account-form').addEventListener('submit', e => {
     e.preventDefault()
     createAccount()
 })
+
+function error() {
+    const error = document.getElementById('error')
+    error.style.display = ''
+    setTimeout(() => error.style.display = "none", 5000)
+}
+
+function success(user) {
+    fetch('http://localhost:3000/users', new Config('POST', user))
+    .then(res => res.json())
+    .then(user => {
+        renderBasicUserInfo(user)
+        document.getElementById('read-btn').disabled = true
+        document.getElementById('unread-btn').disabled = true
+    })
+}
 
 function renderBasicUserInfo(user) {
     const div = document.createElement('div')
@@ -242,10 +264,12 @@ function renderBasicUserInfo(user) {
     div.appendChild(document.createElement('br'))
     const span = document.createElement('span')
     const readBtn = document.createElement('button')
+    readBtn.id = 'read-btn'
     readBtn.textContent = 'Read'
     span.appendChild(readBtn)
     const unreadBtn = document.createElement('button')
     unreadBtn.textContent = 'Want to Read'
+    unreadBtn.id = 'unread-btn'
     span.appendChild(unreadBtn)
     div.appendChild(span)
     document.getElementById('user-info').appendChild(div)

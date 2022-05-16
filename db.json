@@ -11,6 +11,12 @@
       "username": "joe",
       "password": "joe",
       "id": 2
+    },
+    {
+      "name": "Osama Bin Laden",
+      "username": "binny",
+      "password": "binny",
+      "id": 3
     }
   ],
   "books": []
