@@ -25,6 +25,15 @@ function handleGet(url, fnc) {
     .then(data => fnc(data))
 }
 
+//generic POST/PATCH function
+function handlePostPatch(source, method, obj, fnc) {
+    let url
+    method === 'POST' ? url = `http://localhost:3000/${source}` : url = `http://localhost:3000/${source}/${obj.id}`
+    fetch(url, new Config(method, obj))
+    .then(res => res.json())
+    .then(res => fnc(res))
+}
+
 //event listener to switch between login and create account forms
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
@@ -163,11 +172,12 @@ function getBookDetailsFromOl(url) {
             publishDate: book.publish_date,
             olKey: book.key,
             readBy: [],
+            wantToRead: [],
             rating: {
                 allRatings: [],
                 total: 'none',
                 average: 'none'
-            }
+            },
         }
         book.by_statement === undefined ? currentBook.author = currentAuthor[0] : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
@@ -178,7 +188,6 @@ function getBookDetailsFromOl(url) {
             currentBook.series = book.series
         }
         renderDetailedBook(currentBook)
-        console.log(currentBook)
         return currentBook
     }
     handleGet(url, callback)
@@ -235,7 +244,7 @@ function renderDetailedBook(bookObj) {
     fullDetails.appendChild(document.createElement('br'))
     const readCount = document.createElement('h5')
     readCount.id = 'read-count'
-    readCount.textContent = `This book has been read by ${currentBook.readBy.length} Book Wyrm(s)`
+    readCount.textContent = `This book has been read by ${currentBook.readBy.length} Book Wyrm(s), and ${currentBook.wantToRead.length} Book Wyrm(s) would like to read it`
     fullDetails.appendChild(readCount)
     fullDetails.appendChild(document.createElement('br'))
     const rateBtn = document.createElement('button')
@@ -247,45 +256,50 @@ function renderDetailedBook(bookObj) {
     markRead.textContent = 'Read'
     fullDetails.appendChild(markRead)
     markRead.addEventListener('click', () => {
-        function postPatchCallback(book) {
-            renderDetailedBook(book)
-                currentBook = book
-                currentUser.readList.push({
-                    id: currentBook.id,
-                    cover: currentBook.cover,
-                    author: currentBook.author,
-                    title: currentBook.title,
-                })
-                function updateUser(user) {
-                    renderUserLists(user.readList, 'read-list')
-                }
-                handlePostPatch('users', "PATCH", currentUser, updateUser)
-                return currentBook
-        }
-        if (currentUser !== undefined) {
-            currentBook.readBy.push(currentUser.username)
-            currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
-        }
+        bookDetailEventCallback('readBy', 'readList', 'read')
     })
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
     toRead.textContent = "Want to read"
     fullDetails.appendChild(toRead)
+    toRead.addEventListener('click', () => {
+        bookDetailEventCallback('wantToRead', 'wishList', 'unread')
+    })
 }
 
-function handlePostPatch(source, method, obj, fnc) {
-    let url
-    method === 'POST' ? url = `http://localhost:3000/${source}` : url = `http://localhost:3000/${source}/${obj.id}`
-    fetch(url, new Config(method, obj))
-    .then(res => res.json())
-    .then(res => fnc(res))
+function bookDetailEventCallback(bookList, userList, id) {
+    function postPatchCallback(book) {
+        renderDetailedBook(book)
+            currentBook = book
+            currentUser[userList].push({
+                id: currentBook.id,
+                cover: currentBook.cover,
+                author: currentBook.author,
+                title: currentBook.title,
+            })
+            function updateUser(user) {
+                renderUserLists(user[userList], userList, id)
+            }
+            handlePostPatch('users', "PATCH", currentUser, updateUser)
+            return currentBook
+    }
+    if (currentUser !== undefined) {
+        currentBook[bookList].push(currentUser.username)
+        currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
+    }
 }
 
+
+
+
+//account functions
 function createAccount() {
     const newUser = {
         name: document.getElementById('name').value,
         username: document.getElementById('new-username').value,
-        password: document.getElementById('new-password').value
+        password: document.getElementById('new-password').value,
+        readList: [],
+        wishList: []
     }
     fetchUsers(newUser, 0, 'POST')
 }
@@ -373,21 +387,21 @@ function renderBasicUserInfo(user) {
     document.getElementById('login-header').appendChild(div)
     document.getElementById('login').style.display = 'none'
     document.getElementById('create-account').style.display = 'none'
-    if (user.readList === undefined) {
+    if (user.readList.length === 0) {
         const emptyRead = document.createElement('p')
         emptyRead.textContent = 'You haven\'t put any books on your Read List yet!'
-        emptyRead.id = 'read-list'
+        emptyRead.id = 'readList'
         document.getElementById('read').appendChild(emptyRead)
     } else {
-        renderUserLists(user.readList, 'read-list')
+        renderUserLists(user.readList, 'readList', 'read')
     }
-    if (user.wishList === undefined) {
+    if (user.wishList.length === 0) {
         const emptyWish = document.createElement('p')
         emptyWish.textContent = 'You haven\'t selected any books that you want to read!'
-        emptyWish.id = 'wish-list'
+        emptyWish.id = 'wishList'
         document.getElementById('unread').appendChild(emptyWish)
     } else {
-        renderUserLists(user.wishList, 'wish-list')
+        renderUserLists(user.wishList, 'wishList', 'unread')
     }
     document.getElementById('unread').style.display = 'none'
     unreadBtn.addEventListener('click', () => {
@@ -408,7 +422,7 @@ function renderBasicUserInfo(user) {
     }
 }
 
-function renderUserLists(books, id) {
+function renderUserLists(books, id, divId) {
     if (document.getElementById(id) !== null) {
         document.getElementById(id).remove()
     }
@@ -429,5 +443,6 @@ function renderUserLists(books, id) {
         `
         ul.appendChild(li)
     })
-    document.getElementById('user-info').appendChild(ul)
+    console.log(divId)
+    document.getElementById(divId).appendChild(ul)
 }
