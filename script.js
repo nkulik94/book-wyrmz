@@ -18,6 +18,13 @@ class Config {
     }
 }
 
+//generic GET request function
+function handleGet(url, callback) {
+    fetch(url)
+    .then(res => res.json())
+    .then(data => callback(data))
+}
+
 //event listener to switch between login and create account forms
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
