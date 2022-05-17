@@ -4,7 +4,17 @@
       "name": "Naftali Kulik",
       "username": "nkulik",
       "password": "nkulik",
-      "id": 1
+      "id": 1,
+      "readList": [
+        {
+          "id": 1,
+          "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+          "author": [
+            "Steven Erikson"
+          ],
+          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)"
+        }
+      ]
     }
   ],
   "books": [

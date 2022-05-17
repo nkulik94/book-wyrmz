@@ -221,12 +221,22 @@ function renderDetailedBook(bookObj) {
         function postPatchCallback(book) {
             renderDetailedBook(book)
                 currentBook = book
-                currentUser.readList.push(currentBook.id)
-                //post user details
+                currentUser.readList.push({
+                    id: currentBook.id,
+                    cover: currentBook.cover,
+                    author: currentBook.author,
+                    title: currentBook.title,
+                })
+                function updateUser(user) {
+                    renderUserLists(user.readList, 'read-list')
+                }
+                handlePostPatch('users', "PATCH", currentUser, updateUser)
                 return currentBook
         }
-        currentBook.readBy.push(currentUser.username)
-        currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
+        if (currentUser !== undefined) {
+            currentBook.readBy.push(currentUser.username)
+            currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
+        }
     })
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
@@ -266,7 +276,9 @@ function fetchUsers(user, i, method) {
         if (res.length === 1 && res[0].password !== user.password) {
             error(method)
         }
-        res.length === i ? success(user, method) : error(method)
+        let userArg
+        res.length === 1 ? userArg = res[0] : userArg = user
+        res.length === i ? success(userArg, method) : error(method)
     })
 }
 
@@ -301,7 +313,7 @@ function success(user, method) {
     function returnUser() {
         renderBasicUserInfo(user)
         currentUser = user
-        if (currentUser.readList === undefined) {
+        if (user.readList === undefined) {
             currentUser.readList = []
         }
         return currentUser
