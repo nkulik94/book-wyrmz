@@ -257,6 +257,11 @@ function renderDetailedBook(bookObj) {
     fullDetails.appendChild(readCount)
     
     fullDetails.appendChild(document.createElement('br'))
+
+    const errorMsg = document.createElement('h3')
+    errorMsg.textContent = "Please log in complete this action"
+    fullDetails.appendChild(errorMsg)
+    errorMsg.style.display = 'none'
     
     const rateForm = document.createElement('form')
     rateForm.id = 'rate-form'
@@ -271,6 +276,10 @@ function renderDetailedBook(bookObj) {
         <input type="submit" value="Rate!">
     `
     fullDetails.appendChild(rateForm)
+    // rateForm.addEventListener('submit', (e) => {
+    //     e.preventDefault()
+
+    // })
     rateForm.style.display = 'none'
     
     const rateBtn = document.createElement('button')
@@ -278,7 +287,10 @@ function renderDetailedBook(bookObj) {
     rateBtn.textContent = 'Rate this book'
     fullDetails.appendChild(rateBtn)
     rateBtn.addEventListener('click', () => {
-        if (rateForm.style.display === 'none') {
+        if (currentUser === undefined) {
+            errorMsg.style.display = ''
+            setTimeout(() => errorMsg.style.display = 'none', 3000)
+        } else if (rateForm.style.display === 'none') {
             rateForm.style.display = ''
         }
     })
@@ -288,9 +300,14 @@ function renderDetailedBook(bookObj) {
     markRead.textContent = 'Read'
     fullDetails.appendChild(markRead)
     markRead.addEventListener('click', () => {
+        if (currentUser === undefined) {
+            errorMsg.style.display = ''
+            setTimeout(() => errorMsg.style.display = 'none', 3000)
+        } else {
         bookDetailEventCallback('readBy', 'readList', 'read')
+        }
     })
-    if (currentUser.readList.find(book => book.id === currentBook.id) !== undefined) {
+    if (currentUser !== undefined && currentUser.readList.find(book => book.id === currentBook.id) !== undefined) {
         markRead.disabled = true
     }
     
@@ -299,8 +316,16 @@ function renderDetailedBook(bookObj) {
     toRead.textContent = "Want to read"
     fullDetails.appendChild(toRead)
     toRead.addEventListener('click', () => {
+        if (currentUser === undefined) {
+            errorMsg.style.display = ''
+            setTimeout(() => errorMsg.style.display = 'none', 3000)
+        } else {
         bookDetailEventCallback('wantToRead', 'wishList', 'unread')
+        }
     })
+    if (currentUser !== undefined && currentUser.wishList.find(book => book.id === currentBook.id) !== undefined) {
+        toRead.disabled = true
+    }
 }
 
 function bookDetailEventCallback(bookList, userList, id) {
@@ -385,18 +410,14 @@ function success(user, method) {
         fetch('http://localhost:3000/users', new Config(method, user))
         .then(res => res.json())
         .then(user => {
-            renderBasicUserInfo(user)
             currentUser = user
-            currentUser.readList = []
+            renderBasicUserInfo(user)
             return currentUser
         })
         }
     function returnUser() {
-        renderBasicUserInfo(user)
         currentUser = user
-        if (user.readList === undefined) {
-            currentUser.readList = []
-        }
+        renderBasicUserInfo(user)
         return currentUser
     }
     method === 'POST' ? newUser() : returnUser()
