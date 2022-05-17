@@ -9,7 +9,15 @@
           "id": 1,
           "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
           "author": "Steven Erikson",
-          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)"
+          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+          "ownRating": 5
+        },
+        {
+          "id": 2,
+          "cover": "https://covers.openlibrary.org/b/id/6680652-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
+          "ownRating": 5
         }
       ],
       "wishList": [],
@@ -30,9 +38,11 @@
       ],
       "wantToRead": [],
       "rating": {
-        "allRatings": [],
-        "total": "none",
-        "average": "none"
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
       },
       "author": "Steven Erikson",
       "description": "Sorry, there is no description available for this book",
@@ -40,6 +50,30 @@
         "Malazan Book of the Fallen (4)"
       ],
       "id": 1
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/6680652-M.jpg",
+      "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
+      "publisher": "Tor Fantasy",
+      "publishDate": "February 7, 2005",
+      "olKey": "/books/OL8054062M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (2)"
+      ],
+      "id": 2
     }
   ]
 }

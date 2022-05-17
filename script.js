@@ -246,7 +246,7 @@ function renderDetailedBook(bookObj) {
     
     const rating = document.createElement('h5')
     rating.id = 'rating'
-    currentBook.rating.average === 'none' ? rating.textContent = 'Average Rating: This book has not been rated by any Book Wyrms' : `Average Rating: ${currentBook.rating.average} out of 5`
+    currentBook.rating.average === 'none' ? rating.textContent = 'Average Rating: This book has not been rated by any Book Wyrms' : rating.textContent = `Average Rating: ${currentBook.rating.average} out of 5`
     fullDetails.appendChild(rating)
     
     fullDetails.appendChild(document.createElement('br'))
@@ -276,10 +276,37 @@ function renderDetailedBook(bookObj) {
         <input type="submit" value="Rate!">
     `
     fullDetails.appendChild(rateForm)
-    // rateForm.addEventListener('submit', (e) => {
-    //     e.preventDefault()
-
-    // })
+    rateForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const newRating = document.getElementById('new-rating')
+        currentBook.rating.allRatings.push(parseInt(newRating.value, 10))
+        currentBook.rating.total === 'none' ? currentBook.rating.total = parseInt(newRating.value, 10) : currentBook.rating.total += parseInt(newRating.value, 10)
+        currentBook.rating.average = currentBook.rating.total / currentBook.rating.allRatings.length
+        function callback(book) {
+            currentBook = book
+            const alreadyRead = currentUser.readList.find(readBook => readBook.id === currentBook.id)
+            if (alreadyRead === undefined) {
+                currentUser.readList.push({
+                    id: currentBook.id,
+                    cover: currentBook.cover,
+                    author: currentBook.author,
+                    title: currentBook.title,
+                    ownRating: parseInt(newRating.value, 10)
+                })
+            } else {
+                alreadyRead.ownRating = parseInt(newRating.value, 10)
+            }
+            function updateUser(user) {
+                renderUserLists(user.readList, 'readList', 'read')
+            }
+            handlePostPatch('users', "PATCH", currentUser, updateUser)
+            return currentBook
+        }
+        if (currentBook.readBy.find(user => user === currentUser.username) === undefined) {
+            currentBook.readBy.push(currentUser.username)
+        }
+        currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, callback) : handlePostPatch('books', 'PATCH', currentBook, callback)
+    })
     rateForm.style.display = 'none'
     
     const rateBtn = document.createElement('button')
@@ -294,6 +321,9 @@ function renderDetailedBook(bookObj) {
             rateForm.style.display = ''
         }
     })
+    if (currentUser !== undefined && currentUser.readList.find(book => book.id === currentBook.id && book.ownRating !== 'none') !== undefined) {
+        rateBtn.disabled = true
+    }
     
     const markRead = document.createElement('button')
     markRead.id = 'mark-read'
@@ -337,6 +367,7 @@ function bookDetailEventCallback(bookList, userList, id) {
                 cover: currentBook.cover,
                 author: currentBook.author,
                 title: currentBook.title,
+                ownRating: 'none'
             })
             function updateUser(user) {
                 renderUserLists(user[userList], userList, id)
@@ -486,7 +517,7 @@ function renderUserLists(books, id, divId) {
     ul.id = id
     books.map(book => {
         let rating
-        book.ownRating === undefined ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.rating} out of 5`
+        book.ownRating === 'none' ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.ownRating} out of 5`
         const li = document.createElement('li')
         li.className = `li-for-${id}`
         li.innerHTML = `
