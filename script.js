@@ -142,37 +142,20 @@ function searchResultPages(i, id) {
 }
 
 function getBookDetailsFromLocal(olUrl, key) {
-    // function callback(book) {
-    //     console.log('book', book)
-    //     if (book !== []) {
-    //         currentBook = book
-    //         console.log(currentBook)
-    //         renderDetailedBook(currentBook)
-    //         return currentBook
-    //     } else {
-    //         getBookDetailsFromOl(olUrl)
-    //     }
-    //}
-    fetch(`http://localhost:3000/books?olKey=${key}`)
-    .then(res => res.json())
-    .then(book => {
-        console.log('result', book)
+    function callback(book) {
         if (book.length !== 0 && book[0].olKey === key) {
             currentBook = book[0]
-            console.log(currentBook)
             renderDetailedBook(currentBook)
             return currentBook
         } else {
             getBookDetailsFromOl(olUrl)
         }
-    })
-    //handleGet(`http://localhost:3000/books?olKey=${key}`, callback)
+    }
+    handleGet(`http://localhost:3000/books?olKey=${key}`, callback)
 }
 
 function getBookDetailsFromOl(url) {
-    fetch(url)
-    .then(res => res.json())
-    .then(book => {
+    function callback(book) {
         currentBook = {
             cover: `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`,
             title: book.title,
@@ -181,7 +164,7 @@ function getBookDetailsFromOl(url) {
             olKey: book.key,
             readBy: []
         }
-        book.by_statement === undefined ? currentBook.author = currentAuthor : currentBook.author = book.by_statement
+        book.by_statement === undefined ? currentBook.author = currentAuthor[0] : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
         if (typeof book.description === 'object') {
             currentBook.description = book.description.value
@@ -190,8 +173,10 @@ function getBookDetailsFromOl(url) {
             currentBook.series = book.series
         }
         renderDetailedBook(currentBook)
+        console.log(currentBook)
         return currentBook
-    })
+    }
+    handleGet(url, callback)
 }
 
 function renderBookResults(book) {
@@ -210,14 +195,12 @@ function renderBookResults(book) {
     `
     resultList.appendChild(li)
     document.getElementById(`details-for-${book.key}`).addEventListener('click', () => {
-        //getBookDetailsFromOl(bookUrl)
         getBookDetailsFromLocal(bookUrl, `/books/${book.cover_edition_key}`)
         return currentAuthor = author
     })
 }
 
 function renderDetailedBook(bookObj) {
-    console.log(bookObj)
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
     }

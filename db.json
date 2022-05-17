@@ -9,9 +9,7 @@
         {
           "id": 1,
           "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
-          "author": [
-            "Steven Erikson"
-          ],
+          "author": "Steven Erikson",
           "title": "House of Chains (The Malazan Book of the Fallen, Book 4)"
         }
       ]
@@ -27,9 +25,7 @@
       "readBy": [
         "nkulik"
       ],
-      "author": [
-        "Steven Erikson"
-      ],
+      "author": "Steven Erikson",
       "description": "Sorry, there is no description available for this book",
       "series": [
         "Malazan Book of the Fallen (4)"
