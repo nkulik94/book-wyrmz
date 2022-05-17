@@ -18,6 +18,17 @@ class Config {
     }
 }
 
+class ReadBook {
+    constructor(rating, review) {
+        this.id = currentBook.id,
+        this.cover = currentBook.cover,
+        this.author = currentBook.author,
+        this.title = currentBook.title,
+        this.ownRating = rating,
+        this.review = review
+    }
+}
+
 //generic GET request function
 function handleGet(url, fnc) {
     fetch(url)
@@ -181,6 +192,7 @@ function getBookDetailsFromOl(url) {
                 total: 'none',
                 average: 'none'
             },
+            reviews: []
         }
         book.by_statement === undefined ? currentBook.author = currentAuthor[0] : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
@@ -286,13 +298,7 @@ function renderDetailedBook(bookObj) {
             currentBook = book
             const alreadyRead = currentUser.readList.find(readBook => readBook.id === currentBook.id)
             if (alreadyRead === undefined) {
-                currentUser.readList.push({
-                    id: currentBook.id,
-                    cover: currentBook.cover,
-                    author: currentBook.author,
-                    title: currentBook.title,
-                    ownRating: parseInt(newRating.value, 10)
-                })
+                currentUser.readList.push(new ReadBook(parseInt(newRating.value, 10), 'none'))
             } else {
                 alreadyRead.ownRating = parseInt(newRating.value, 10)
             }
@@ -310,7 +316,7 @@ function renderDetailedBook(bookObj) {
     rateForm.style.display = 'none'
     
     const rateBtn = document.createElement('button')
-    rateBtn.id = 'rate-btn'
+    rateBtn.id = 'rate-btn' 
     rateBtn.textContent = 'Rate this book'
     fullDetails.appendChild(rateBtn)
     rateBtn.addEventListener('click', () => {
@@ -362,13 +368,15 @@ function bookDetailEventCallback(bookList, userList, id) {
     function postPatchCallback(book) {
         renderDetailedBook(book)
             currentBook = book
-            currentUser[userList].push({
-                id: currentBook.id,
-                cover: currentBook.cover,
-                author: currentBook.author,
-                title: currentBook.title,
-                ownRating: 'none'
-            })
+            currentUser[userList].push(new ReadBook('none', 'none'))
+            //     {
+            //     id: currentBook.id,
+            //     cover: currentBook.cover,
+            //     author: currentBook.author,
+            //     title: currentBook.title,
+            //     ownRating: 'none',
+            //     review: 'none'
+            // })
             function updateUser(user) {
                 renderUserLists(user[userList], userList, id)
             }
@@ -393,7 +401,6 @@ function createAccount() {
         readList: [],
         wishList: [],
         ratings: [],
-        reviews: []
     }
     fetchUsers(newUser, 0, 'POST')
 }
