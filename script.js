@@ -162,7 +162,12 @@ function getBookDetailsFromOl(url) {
             publisher: book.publishers[0],
             publishDate: book.publish_date,
             olKey: book.key,
-            readBy: []
+            readBy: [],
+            rating: {
+                allRatings: [],
+                total: 'none',
+                average: 'none'
+            }
         }
         book.by_statement === undefined ? currentBook.author = currentAuthor[0] : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
@@ -225,8 +230,13 @@ function renderDetailedBook(bookObj) {
     fullDetails.appendChild(document.createElement('br'))
     const rating = document.createElement('h5')
     rating.id = 'rating'
-    currentBook.rating === undefined ? rating.textContent = 'Average Rating: This book has not been rated by any bookworms' : `Average Rating: ${currentBook.rating.average} out of 5`
+    currentBook.rating.average === 'none' ? rating.textContent = 'Average Rating: This book has not been rated by any Book Wyrms' : `Average Rating: ${currentBook.rating.average} out of 5`
     fullDetails.appendChild(rating)
+    fullDetails.appendChild(document.createElement('br'))
+    const readCount = document.createElement('h5')
+    readCount.id = 'read-count'
+    readCount.textContent = `This book has been read by ${currentBook.readBy.length} Book Wyrm(s)`
+    fullDetails.appendChild(readCount)
     fullDetails.appendChild(document.createElement('br'))
     const rateBtn = document.createElement('button')
     rateBtn.id = 'rate-btn'
