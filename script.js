@@ -218,10 +218,12 @@ function renderDetailedBook(bookObj) {
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
     }
+    
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
     let series
     bookObj.series === undefined ? series = 'N/A' : series = bookObj.series
+    
     fullDetails.innerHTML = `
         <img class="float" src="${bookObj.cover}" alt="Cover for ${bookObj.title}">
         <h2>${bookObj.title}</h2>
@@ -236,21 +238,48 @@ function renderDetailedBook(bookObj) {
         ${bookObj.description}</p>
     `
     document.getElementById('book-details').appendChild(fullDetails)
+    
     fullDetails.appendChild(document.createElement('br'))
+    
     const rating = document.createElement('h5')
     rating.id = 'rating'
     currentBook.rating.average === 'none' ? rating.textContent = 'Average Rating: This book has not been rated by any Book Wyrms' : `Average Rating: ${currentBook.rating.average} out of 5`
     fullDetails.appendChild(rating)
+    
     fullDetails.appendChild(document.createElement('br'))
+    
     const readCount = document.createElement('h5')
     readCount.id = 'read-count'
     readCount.textContent = `This book has been read by ${currentBook.readBy.length} Book Wyrm(s), and ${currentBook.wantToRead.length} Book Wyrm(s) would like to read it`
     fullDetails.appendChild(readCount)
+    
     fullDetails.appendChild(document.createElement('br'))
+    
+    const rateForm = document.createElement('form')
+    rateForm.id = 'rate-form'
+    rateForm.innerHTML = `
+        <select>
+            <option value="5" selected>5</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+        </select>
+        <input type="submit" value="Rate!">
+    `
+    fullDetails.appendChild(rateForm)
+    rateForm.style.display = 'none'
+    
     const rateBtn = document.createElement('button')
     rateBtn.id = 'rate-btn'
     rateBtn.textContent = 'Rate this book'
     fullDetails.appendChild(rateBtn)
+    rateBtn.addEventListener('click', () => {
+        if (rateForm.style.display === 'none') {
+            rateForm.style.display = ''
+        }
+    })
+    
     const markRead = document.createElement('button')
     markRead.id = 'mark-read'
     markRead.textContent = 'Read'
@@ -258,6 +287,7 @@ function renderDetailedBook(bookObj) {
     markRead.addEventListener('click', () => {
         bookDetailEventCallback('readBy', 'readList', 'read')
     })
+    
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
     toRead.textContent = "Want to read"
@@ -299,7 +329,9 @@ function createAccount() {
         username: document.getElementById('new-username').value,
         password: document.getElementById('new-password').value,
         readList: [],
-        wishList: []
+        wishList: [],
+        ratings: [],
+        reviews: []
     }
     fetchUsers(newUser, 0, 'POST')
 }
