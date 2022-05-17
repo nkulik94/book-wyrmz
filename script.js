@@ -141,6 +141,9 @@ function pageButton(pages, id, list) {
         nextButton.disabled = false
     })
     backButton.disabled = true
+    if (document.getElementsByClassName(`${list}-previous-btns`).length === 0) {
+        nextButton.disabled = true
+    }
 }
 
 function searchResultPages(i, id) {
@@ -258,7 +261,7 @@ function renderDetailedBook(bookObj) {
     const rateForm = document.createElement('form')
     rateForm.id = 'rate-form'
     rateForm.innerHTML = `
-        <select>
+        <select id="new-rating">
             <option value="5" selected>5</option>
             <option value="4">4</option>
             <option value="3">3</option>
@@ -287,6 +290,9 @@ function renderDetailedBook(bookObj) {
     markRead.addEventListener('click', () => {
         bookDetailEventCallback('readBy', 'readList', 'read')
     })
+    if (currentUser.readList.find(book => book.id === currentBook.id) !== undefined) {
+        markRead.disabled = true
+    }
     
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
@@ -449,9 +455,6 @@ function renderBasicUserInfo(user) {
         unreadBtn.disabled = false
     })
     readBtn.disabled = true
-    if (currentBook !== undefined) {
-        renderDetailedBook(currentBook)
-    }
 }
 
 function renderUserLists(books, id, divId) {
@@ -475,6 +478,8 @@ function renderUserLists(books, id, divId) {
         `
         ul.appendChild(li)
     })
-    console.log(divId)
     document.getElementById(divId).appendChild(ul)
+    if (currentBook !== undefined) {
+        renderDetailedBook(currentBook)
+    }
 }
