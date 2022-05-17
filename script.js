@@ -19,10 +19,10 @@ class Config {
 }
 
 //generic GET request function
-function handleGet(url, callback) {
+function handleGet(url, fnc) {
     fetch(url)
     .then(res => res.json())
-    .then(data => callback(data))
+    .then(data => fnc(data))
 }
 
 //event listener to switch between login and create account forms
@@ -141,7 +141,35 @@ function searchResultPages(i, id) {
     document.getElementById(id).appendChild(btn)
 }
 
-function getBookDetails(url) {
+function getBookDetailsFromLocal(olUrl, key) {
+    // function callback(book) {
+    //     console.log('book', book)
+    //     if (book !== []) {
+    //         currentBook = book
+    //         console.log(currentBook)
+    //         renderDetailedBook(currentBook)
+    //         return currentBook
+    //     } else {
+    //         getBookDetailsFromOl(olUrl)
+    //     }
+    //}
+    fetch(`http://localhost:3000/books?olKey=${key}`)
+    .then(res => res.json())
+    .then(book => {
+        console.log('result', book)
+        if (book.length !== 0 && book[0].olKey === key) {
+            currentBook = book[0]
+            console.log(currentBook)
+            renderDetailedBook(currentBook)
+            return currentBook
+        } else {
+            getBookDetailsFromOl(olUrl)
+        }
+    })
+    //handleGet(`http://localhost:3000/books?olKey=${key}`, callback)
+}
+
+function getBookDetailsFromOl(url) {
     fetch(url)
     .then(res => res.json())
     .then(book => {
@@ -149,7 +177,9 @@ function getBookDetails(url) {
             cover: `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`,
             title: book.title,
             publisher: book.publishers[0],
-            publishDate: book.publish_date
+            publishDate: book.publish_date,
+            olKey: book.key,
+            readBy: []
         }
         book.by_statement === undefined ? currentBook.author = currentAuthor : currentBook.author = book.by_statement
         book.description === undefined ? currentBook.description = 'Sorry, there is no description available for this book' : currentBook.description = book.description
@@ -160,9 +190,6 @@ function getBookDetails(url) {
             currentBook.series = book.series
         }
         renderDetailedBook(currentBook)
-        if (currentBook.readBy === undefined) {
-            currentBook.readBy = []
-        }
         return currentBook
     })
 }
@@ -183,12 +210,14 @@ function renderBookResults(book) {
     `
     resultList.appendChild(li)
     document.getElementById(`details-for-${book.key}`).addEventListener('click', () => {
-        getBookDetails(bookUrl)
+        //getBookDetailsFromOl(bookUrl)
+        getBookDetailsFromLocal(bookUrl, `/books/${book.cover_edition_key}`)
         return currentAuthor = author
     })
 }
 
 function renderDetailedBook(bookObj) {
+    console.log(bookObj)
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
     }
