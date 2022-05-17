@@ -4,11 +4,90 @@
       "name": "Naftali Kulik",
       "username": "nkulik",
       "password": "nkulik",
-      "readList": [],
+      "readList": [
+        {
+          "id": 1,
+          "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+          "author": "Steven Erikson",
+          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+          "ownRating": 5,
+          "review": "great book"
+        },
+        {
+          "id": 2,
+          "cover": "https://covers.openlibrary.org/b/id/6680652-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
+          "ownRating": 5,
+          "review": "great book"
+        }
+      ],
       "wishList": [],
-      "ratings": [],
       "id": 1
     }
   ],
-  "books": []
+  "books": [
+    {
+      "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+      "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+      "publisher": "Tor Books",
+      "publishDate": "August 22, 2006",
+      "olKey": "/books/OL8053478M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "great book",
+          "rating": 5
+        }
+      ],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (4)"
+      ],
+      "id": 1
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/6680652-M.jpg",
+      "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
+      "publisher": "Tor Fantasy",
+      "publishDate": "February 7, 2005",
+      "olKey": "/books/OL8054062M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "great book",
+          "rating": 5
+        }
+      ],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (2)"
+      ],
+      "id": 2
+    }
+  ]
 }

@@ -233,6 +233,8 @@ function renderDetailedBook(bookObj) {
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
     }
+
+    const userBook = currentUser.readList.find(book => book.id === currentBook.id)
     
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
@@ -296,11 +298,11 @@ function renderDetailedBook(bookObj) {
         currentBook.rating.average = currentBook.rating.total / currentBook.rating.allRatings.length
         function callback(book) {
             currentBook = book
-            const alreadyRead = currentUser.readList.find(readBook => readBook.id === currentBook.id)
-            if (alreadyRead === undefined) {
+            //const alreadyRead = currentUser.readList.find(readBook => readBook.id === currentBook.id)
+            if (userBook === undefined) {
                 currentUser.readList.push(new ReadBook(parseInt(newRating.value, 10), 'none'))
             } else {
-                alreadyRead.ownRating = parseInt(newRating.value, 10)
+                userBook.ownRating = parseInt(newRating.value, 10)
             }
             function updateUser(user) {
                 renderUserLists(user.readList, 'readList', 'read')
@@ -336,7 +338,7 @@ function renderDetailedBook(bookObj) {
         bookDetailEventCallback('readBy', 'readList', 'read')
         }
     })
-    if (currentUser !== undefined && currentUser.readList.find(book => book.id === currentBook.id) !== undefined) {
+    if (currentUser !== undefined && userBook !== undefined) {
         markRead.disabled = true
     }
     
@@ -361,20 +363,59 @@ function renderDetailedBook(bookObj) {
     const reviewForm = document.createElement('form')
     reviewForm.id = 'review-form'
     reviewForm.innerHTML = `
-        <textarea name="review"></textarea>
+        <textarea name="review" id="review-content"></textarea>
         <br>
         <input type="submit" value="Submit Review">
     `
     reviewForm.style.marginTop = '10px'
     fullDetails.appendChild(reviewForm)
+    reviewForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const newReview = document.getElementById('review-content')
+        //const userBook = currentUser.readList.find(book => book.id === currentBook.id)
+        const reviewObj = {
+            user: currentUser.username,
+            reviewContent: newReview.value,
+            rating: userBook.ownRating
+        }
+        currentBook.reviews.push(reviewObj)
+        userBook.review = newReview.value
+        function userCallback(user) {
+            currentUser = user
+            renderUserLists(user.readList, 'readList', 'read')
+            return currentUser
+        }
+        function bookCallback(book) {
+            currentBook = book
+            renderDetailedBook(book)
+            return currentBook
+        }
+        handlePostPatch('books', 'PATCH', currentBook, bookCallback)
+        handlePostPatch('users', 'PATCH', currentUser, userCallback)
+    })
     reviewForm.style.display = 'none'
+
+    const reviewError = document.createElement('h5')
+    reviewError.id = 'review-error'
+    reviewError.textContent = 'Please rate this book before giving a review'
+    fullDetails.appendChild(reviewError)
+    reviewError.style.display = 'none'
 
     const reviewBtn = document.createElement('button')
     reviewBtn.id = 'review-btn'
     reviewBtn.textContent = 'Leave a review'
     fullDetails.appendChild(reviewBtn)
-    reviewBtn.addEventListener('click', () => rateReviewBtnCallbacks(reviewForm, errorMsg))
-
+    reviewBtn.addEventListener('click', () => {
+        if (rateBtn.disabled === false) {
+            reviewError.style.display = ''
+            setTimeout(() => reviewError.style.display = 'none', 3000) 
+        } else {
+        rateReviewBtnCallbacks(reviewForm, errorMsg)
+        }
+    })
+    if (userBook !== undefined && userBook.review !== 'none') {
+        reviewBtn.disabled = true
+    }
 }
 
 function rateReviewBtnCallbacks(form, errorMsg) {
@@ -412,8 +453,7 @@ function createAccount() {
         username: document.getElementById('new-username').value,
         password: document.getElementById('new-password').value,
         readList: [],
-        wishList: [],
-        ratings: [],
+        wishList: []
     }
     fetchUsers(newUser, 0, 'POST')
 }
