@@ -218,31 +218,28 @@ function renderDetailedBook(bookObj) {
     markRead.textContent = 'Read'
     fullDetails.appendChild(markRead)
     markRead.addEventListener('click', () => {
-        currentBook.readBy.push(currentUser.username)
-        if (currentBook.id === undefined) {
-            fetch(`http://localhost:3000/books`, new Config('POST', currentBook))
-            .then(res => res.json())
-            .then(book => {
-                renderDetailedBook(book)
+        function postPatchCallback(book) {
+            renderDetailedBook(book)
                 currentBook = book
                 currentUser.readList.push(currentBook.id)
+                //post user details
                 return currentBook
-            })
-        } else {
-            fetch(`http://localhost:3000/books/${currentBook.id}`, new Config("PATCH", currentBook))
-            .then(res => res.json())
-            .then(book => {
-                currentBook = book
-                renderDetailedBook(currentBook)
-                currentUser.readList.push(currentBook.id)
-                return currentBook
-            })
         }
+        currentBook.readBy.push(currentUser.username)
+        currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
     })
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
     toRead.textContent = "Want to read"
     fullDetails.appendChild(toRead)
+}
+
+function handlePostPatch(source, method, obj, fnc) {
+    let url
+    method === 'POST' ? url = `http://localhost:3000/${source}` : url = `http://localhost:3000/${source}/${obj.id}`
+    fetch(url, new Config(method, obj))
+    .then(res => res.json())
+    .then(res => fnc(res))
 }
 
 function createAccount() {
