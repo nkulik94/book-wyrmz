@@ -1,6 +1,14 @@
 {
   "users": [
+    {
+      "name": "Naftali Kulik",
+      "username": "nkulik",
+      "password": "nkulik",
+      "readList": [],
+      "wishList": [],
+      "ratings": [],
+      "id": 1
+    }
   ],
-  "books": [
-  ]
+  "books": []
 }

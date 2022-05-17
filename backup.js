@@ -319,7 +319,14 @@ function renderDetailedBook(bookObj) {
     rateBtn.id = 'rate-btn' 
     rateBtn.textContent = 'Rate this book'
     fullDetails.appendChild(rateBtn)
-    rateBtn.addEventListener('click', () => rateReviewBtnCallbacks(rateForm, errorMsg))
+    rateBtn.addEventListener('click', () => {
+        if (currentUser === undefined) {
+            errorMsg.style.display = ''
+            setTimeout(() => errorMsg.style.display = 'none', 3000)
+        } else if (rateForm.style.display === 'none') {
+            rateForm.style.display = ''
+        }
+    })
     if (currentUser !== undefined && currentUser.readList.find(book => book.id === currentBook.id && book.ownRating !== 'none') !== undefined) {
         rateBtn.disabled = true
     }
@@ -355,35 +362,6 @@ function renderDetailedBook(bookObj) {
     if (currentUser !== undefined && currentUser.wishList.find(book => book.id === currentBook.id) !== undefined) {
         toRead.disabled = true
     }
-
-    fullDetails.appendChild(document.createElement('br'))
-
-    const reviewForm = document.createElement('form')
-    reviewForm.id = 'review-form'
-    reviewForm.innerHTML = `
-        <textarea name="review"></textarea>
-        <br>
-        <input type="submit" value="Submit Review">
-    `
-    reviewForm.style.marginTop = '10px'
-    fullDetails.appendChild(reviewForm)
-    reviewForm.style.display = 'none'
-
-    const reviewBtn = document.createElement('button')
-    reviewBtn.id = 'review-btn'
-    reviewBtn.textContent = 'Leave a review'
-    fullDetails.appendChild(reviewBtn)
-    reviewBtn.addEventListener('click', () => rateReviewBtnCallbacks(reviewForm, errorMsg))
-
-}
-
-function rateReviewBtnCallbacks(form, errorMsg) {
-    if (currentUser === undefined) {
-        errorMsg.style.display = ''
-        setTimeout(() => errorMsg.style.display = 'none', 3000)
-    } else if (form.style.display === 'none') {
-        form.style.display = ''
-    }
 }
 
 function bookDetailEventCallback(bookList, userList, id) {
@@ -402,6 +380,7 @@ function bookDetailEventCallback(bookList, userList, id) {
         currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
     }
 }
+
 
 
 
