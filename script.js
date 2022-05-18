@@ -316,7 +316,7 @@ function renderDetailedBook(bookObj) {
         const newRating = document.getElementById('new-rating')
         currentBook.rating.allRatings.push(parseInt(newRating.value, 10))
         currentBook.rating.total === 'none' ? currentBook.rating.total = parseInt(newRating.value, 10) : currentBook.rating.total += parseInt(newRating.value, 10)
-        currentBook.rating.average = currentBook.rating.total / currentBook.rating.allRatings.length
+        currentBook.rating.average = Math.round(currentBook.rating.total / currentBook.rating.allRatings.length)
         function callback(book) {
             currentBook = book
             if (userBook === undefined) {
@@ -324,11 +324,17 @@ function renderDetailedBook(bookObj) {
             } else {
                 userBook.ownRating = parseInt(newRating.value, 10)
             }
+            if (userWishBook !== undefined) {
+                currentUser.wishList.splice(currentUser.wishList.indexOf(userWishBook), 1)
+            }
             handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
             return currentBook
         }
         if (currentBook.readBy.find(user => user === currentUser.username) === undefined) {
             currentBook.readBy.push(currentUser.username)
+        }
+        if (currentBook.wantToRead.find(user => user === currentUser.username) !== undefined) {
+            currentBook.wantToRead.splice(currentBook.wantToRead.indexOf(currentUser.username), 1)
         }
         currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, callback) : handlePostPatch('books', 'PATCH', currentBook, callback)
     })

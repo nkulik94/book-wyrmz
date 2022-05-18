@@ -20,22 +20,6 @@
           "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
           "ownRating": 5,
           "review": "none"
-        },
-        {
-          "id": 3,
-          "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
-          "author": "Steven Erikson",
-          "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
-          "ownRating": 5,
-          "review": "none"
-        },
-        {
-          "id": 4,
-          "cover": "https://covers.openlibrary.org/b/id/10521270-M.jpg",
-          "author": "J. K. Rowling.",
-          "title": "Harry Potter and the Philosopher's Stone",
-          "ownRating": "none",
-          "review": "none"
         }
       ],
       "wishList": [],
@@ -92,54 +76,6 @@
         "Malazan Book of the Fallen (2)"
       ],
       "id": 2
-    },
-    {
-      "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
-      "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
-      "publisher": "Tor Books",
-      "publishDate": "October 20, 2005",
-      "olKey": "/books/OL8053597M",
-      "readBy": [
-        "nkulik"
-      ],
-      "wantToRead": [],
-      "rating": {
-        "allRatings": [
-          5
-        ],
-        "total": 5,
-        "average": 5
-      },
-      "reviews": [],
-      "author": "Steven Erikson",
-      "description": "Sorry, there is no description available for this book",
-      "series": [
-        "Malazan Book of the Fallen (3)"
-      ],
-      "id": 3
-    },
-    {
-      "cover": "https://covers.openlibrary.org/b/id/10521270-M.jpg",
-      "title": "Harry Potter and the Philosopher's Stone",
-      "publisher": "Bloomsbury",
-      "publishDate": "1998",
-      "olKey": "/books/OL22856696M",
-      "readBy": [
-        "nkulik"
-      ],
-      "wantToRead": [],
-      "rating": {
-        "allRatings": [],
-        "total": "none",
-        "average": "none"
-      },
-      "reviews": [],
-      "author": "J. K. Rowling.",
-      "description": "Rescued from the outrageous neglect of his aunt and uncle, a young boy with a great destiny proves his worth while attending Hogwarts School for Wizards and Witches",
-      "series": [
-        "Harry Potter #1"
-      ],
-      "id": 4
     }
   ]
 }
