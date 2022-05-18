@@ -45,6 +45,20 @@ function handlePostPatch(source, method, obj, fnc) {
     .then(res => fnc(res))
 }
 
+//generic function to update current book
+function updateBookCallback(book) {
+    currentBook = book
+    renderDetailedBook(currentBook)
+    return currentBook
+}
+
+//generic function to update user
+function updateUserCallback(user) {
+    currentUser = user
+    renderBasicUserInfo(currentUser)
+    return currentUser
+}
+
 //event listener to switch between login and create account forms
 Array.from(document.getElementsByClassName('toggle-forms')).map(btn => {
     btn.addEventListener('click', e => toggleForms(e))
@@ -301,16 +315,12 @@ function renderDetailedBook(bookObj) {
         currentBook.rating.average = currentBook.rating.total / currentBook.rating.allRatings.length
         function callback(book) {
             currentBook = book
-            //const alreadyRead = currentUser.readList.find(readBook => readBook.id === currentBook.id)
             if (userBook === undefined) {
                 currentUser.readList.push(new ReadBook(parseInt(newRating.value, 10), 'none'))
             } else {
                 userBook.ownRating = parseInt(newRating.value, 10)
             }
-            function updateUser(user) {
-                renderUserLists(user.readList, 'readList', 'read')
-            }
-            handlePostPatch('users', "PATCH", currentUser, updateUser)
+            handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
             return currentBook
         }
         if (currentBook.readBy.find(user => user === currentUser.username) === undefined) {
@@ -452,14 +462,12 @@ function rateReviewBtnCallbacks(form, errorMsg) {
 
 function bookDetailEventCallback(bookList, userList, id) {
     function postPatchCallback(book) {
+        currentBook = book
         renderDetailedBook(book)
-            currentBook = book
-            currentUser[userList].push(new ReadBook('none', 'none'))
-            function updateUser(user) {
-                renderUserLists(user[userList], userList, id)
-            }
-            handlePostPatch('users', "PATCH", currentUser, updateUser)
-            return currentBook
+        //currentBook = book
+        currentUser[userList].push(new ReadBook('none', 'none'))
+        handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
+        return currentBook
     }
     if (currentUser !== undefined) {
         currentBook[bookList].push(currentUser.username)
@@ -539,6 +547,9 @@ function success(user, method) {
 }
 
 function renderBasicUserInfo(user) {
+    if (document.getElementById('user-lists') !== null) {
+        document.getElementById('user-lists').remove()
+    }
     const div = document.createElement('div')
     div.id = 'user-lists'
     const h3 = document.createElement('h3')
@@ -653,12 +664,7 @@ function renderUserLists(books, id, divId) {
         button.textContent = 'See more about this book'
         li.appendChild(button)
         button.addEventListener('click', () => {
-            function callback(book) {
-                currentBook = book
-                renderDetailedBook(currentBook)
-                return currentBook
-            }
-            handleGet(`http://localhost:3000/books/${book.id}`, callback)
+            handleGet(`http://localhost:3000/books/${book.id}`, updateBookCallback)
         })
         ul.appendChild(li)
     })
