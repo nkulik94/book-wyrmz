@@ -472,14 +472,17 @@ function bookDetailEventCallback(bookList, userList, wishBook, id) {
             currentUser.wishList.splice(currentUser.wishList.indexOf(wishBook), 1)
         }
         function callback(user) {
-            renderUserLists(user[userList], userList, id)
-            //updateUserCallback(user)
+            //renderUserLists(user[userList], userList, id)
+            updateUserCallback(user)
         }
         currentUser[userList].push(new ReadBook('none', 'none'))
         handlePostPatch('users', "PATCH", currentUser, callback)
         return currentBook
     }
     if (currentUser !== undefined) {
+        if (userList === 'readList' && wishBook !== undefined) {
+            currentBook.wantToRead.splice(currentBook.wantToRead.indexOf(currentUser.username), 1)
+        }
         currentBook[bookList].push(currentUser.username)
         currentBook.id === undefined ? handlePostPatch('books', 'POST', currentBook, postPatchCallback) : handlePostPatch('books', 'PATCH', currentBook, postPatchCallback)
     }
@@ -559,6 +562,12 @@ function success(user, method) {
 function renderBasicUserInfo(user) {
     if (document.getElementById('user-lists') !== null) {
         document.getElementById('user-lists').remove()
+    }
+    if (document.getElementById('readList') !== null) {
+        document.getElementById('readList').remove()
+    }
+    if (document.getElementById('wishList') !== null) {
+        document.getElementById('wishList').remove()
     }
     const div = document.createElement('div')
     div.id = 'user-lists'
