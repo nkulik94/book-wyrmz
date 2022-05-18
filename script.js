@@ -558,6 +558,11 @@ function renderBasicUserInfo(user) {
     span.appendChild(unreadBtn)
     div.appendChild(span)
     document.getElementById('login-header').appendChild(div)
+    document.getElementById('username').value = ''
+    document.getElementById('password').value = ''
+    document.getElementById('name').value = ''
+    document.getElementById('new-username').value = ''
+    document.getElementById('new-password').value = ''
     document.getElementById('login').style.display = 'none'
     document.getElementById('create-account').style.display = 'none'
     if (user.readList.length === 0) {
@@ -590,6 +595,14 @@ function renderBasicUserInfo(user) {
         unreadBtn.disabled = false
     })
     readBtn.disabled = true
+    logOutBtn.addEventListener('click', () => {
+        document.getElementById('readList').remove()
+        document.getElementById('wishList').remove()
+        document.getElementById('login').style.display = ''
+        div.remove()
+        currentUser = undefined
+        return currentUser
+    })
 }
 
 function renderUserLists(books, id, divId) {

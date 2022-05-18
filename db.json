@@ -40,6 +40,14 @@
       ],
       "wishList": [],
       "id": 1
+    },
+    {
+      "name": "joe",
+      "username": "joe",
+      "password": "joe",
+      "readList": [],
+      "wishList": [],
+      "id": 2
     }
   ],
   "books": [
