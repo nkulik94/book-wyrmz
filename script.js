@@ -613,11 +613,12 @@ function renderUserLists(books, id, divId) {
     ul.id = id
     books.map(book => {
         let rating
+        const cover = book.cover.substring(0, book.cover.length - 5) + 'S.jpg'
         book.ownRating === 'none' ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.ownRating} out of 5`
         const li = document.createElement('li')
         li.className = `li-for-${id}`
         li.innerHTML = `
-            <img src="${book.cover}">
+            <img src="${cover}">
             <h4>${book.title}</h4>
             <p>${book.author}</p>
             <br>
