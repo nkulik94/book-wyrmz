@@ -618,14 +618,30 @@ function renderUserLists(books, id, divId) {
         book.ownRating === 'none' ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.ownRating} out of 5`
         const li = document.createElement('li')
         li.className = `li-for-${id}`
-        li.innerHTML = `
-            <img src="${cover}">
-            <h4>${book.title}</h4>
-            <p>${book.author}</p>
-            <br>
-            <p>${rating}</p>
-            <button id="details-for-${book.title}">See more about this book</button>
-        `
+        // li.innerHTML = `
+        //     <img src="${cover}">
+        //     <h4>${book.title}</h4>
+        //     <p>${book.author}</p>
+        //     <br>
+        //     <p>${rating}</p>
+        //     <button id="details-for-${book.title}">See more about this book</button>
+        // `
+        const bookCover = document.createElement('img')
+        bookCover.src = `${cover}`
+        li.appendChild(bookCover)
+        const h4 = document.createElement('h4')
+        h4.textContent = `${book.title}`
+        li.appendChild(h4)
+        li.appendChild(document.createElement('br'))
+        if (id === 'readList') {
+            const bookRating = document.createElement('p')
+            bookRating.textContent = `${rating}`
+            li.appendChild(bookRating)
+        }
+        const button = document.createElement('button')
+        button.id = `details-for-book-${book.id}`
+        button.textContent = 'See more about this book'
+        li.appendChild(button)
         ul.appendChild(li)
     })
     document.getElementById(divId).appendChild(ul)
