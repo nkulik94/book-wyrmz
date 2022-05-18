@@ -575,6 +575,8 @@ function renderBasicUserInfo(user) {
     if (document.getElementById('wishList') !== null) {
         document.getElementById('wishList').remove()
     }
+    const unreadDiv = document.getElementById('unread')
+    const readDiv = document.getElementById('read')
     const div = document.createElement('div')
     div.id = 'user-lists'
     const h3 = document.createElement('h3')
@@ -618,8 +620,6 @@ function renderBasicUserInfo(user) {
     } else {
         renderUserLists(user.wishList, 'wishList', 'unread')
     }
-    document.getElementById('unread').style.display = 'none'
-    document.getElementById('read').style.display = ''
     unreadBtn.addEventListener('click', () => {
         document.getElementById('unread').style.display = ''
         document.getElementById('read').style.display = 'none'
@@ -627,12 +627,17 @@ function renderBasicUserInfo(user) {
         readBtn.disabled = false
     })
     readBtn.addEventListener('click', () => {
-        document.getElementById('read').style.display = ''
-        document.getElementById('unread').style.display = 'none'
+        readDiv.style.display = ''
+        unreadDiv.style.display = 'none'
         readBtn.disabled = true
         unreadBtn.disabled = false
     })
-    readBtn.disabled = true
+    if (readDiv.style.display !== 'none') {
+        unreadDiv.style.display = 'none'
+        readBtn.disabled = true
+    } else {
+        unreadBtn.disabled = true
+    }
     logOutBtn.addEventListener('click', () => {
         document.getElementById('readList').remove()
         document.getElementById('wishList').remove()
