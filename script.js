@@ -193,10 +193,12 @@ function getBookDetailsFromLocal(olUrl, key) {
 
 function getBookDetailsFromOl(url) {
     function callback(book) {
+        let publisher
+        Array.isArray(book.publishers) ? publisher = book.publishers[0] : publisher = 'unavailable'
         currentBook = {
             cover: `https://covers.openlibrary.org/b/id/${book.covers[0]}-M.jpg`,
             title: book.title,
-            publisher: book.publishers[0],
+            publisher: publisher,
             publishDate: book.publish_date,
             olKey: book.key,
             readBy: [],
@@ -249,8 +251,10 @@ function renderDetailedBook(bookObj) {
     }
 
     let userBook 
+    let userWishBook
     if (currentUser !== undefined) {
         userBook = currentUser.readList.find(book => book.id === currentBook.id)
+        userWishBook = currentUser.wishList.find(book => book.id === currentBook.id)
     }
     
     const fullDetails = document.createElement('div')
@@ -348,7 +352,7 @@ function renderDetailedBook(bookObj) {
             errorMsg.style.display = ''
             setTimeout(() => errorMsg.style.display = 'none', 3000)
         } else {
-        bookDetailEventCallback('readBy', 'readList', 'read')
+        bookDetailEventCallback('readBy', 'readList', userWishBook, 'read')
         }
     })
     
@@ -361,7 +365,7 @@ function renderDetailedBook(bookObj) {
             errorMsg.style.display = ''
             setTimeout(() => errorMsg.style.display = 'none', 3000)
         } else {
-        bookDetailEventCallback('wantToRead', 'wishList', 'unread')
+        bookDetailEventCallback('wantToRead', 'wishList', userWishBook, 'unread')
         }
     })
     if (userBook !== undefined) {
@@ -460,13 +464,19 @@ function rateReviewBtnCallbacks(form, errorMsg) {
     }
 }
 
-function bookDetailEventCallback(bookList, userList, id) {
+function bookDetailEventCallback(bookList, userList, wishBook, id) {
     function postPatchCallback(book) {
         currentBook = book
         renderDetailedBook(book)
-        //currentBook = book
+        if (userList === 'readList' && wishBook !== undefined) {
+            currentUser.wishList.splice(currentUser.wishList.indexOf(wishBook), 1)
+        }
+        function callback(user) {
+            renderUserLists(user[userList], userList, id)
+            //updateUserCallback(user)
+        }
         currentUser[userList].push(new ReadBook('none', 'none'))
-        handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
+        handlePostPatch('users', "PATCH", currentUser, callback)
         return currentBook
     }
     if (currentUser !== undefined) {
@@ -594,6 +604,7 @@ function renderBasicUserInfo(user) {
         renderUserLists(user.wishList, 'wishList', 'unread')
     }
     document.getElementById('unread').style.display = 'none'
+    document.getElementById('read').style.display = ''
     unreadBtn.addEventListener('click', () => {
         document.getElementById('unread').style.display = ''
         document.getElementById('read').style.display = 'none'
@@ -624,6 +635,7 @@ function renderUserLists(books, id, divId) {
     }
     const ul = document.createElement('ul')
     ul.id = id
+    document.getElementById(divId).appendChild(ul)
     books.map(book => {
         let rating
         const cover = book.cover.substring(0, book.cover.length - 5) + 'S.jpg'
@@ -646,6 +658,16 @@ function renderUserLists(books, id, divId) {
             const bookReview = document.createElement('p')
             bookReview.innerHTML = review
             bookReview.className = 'user-review'
+            // document.getElementById(`delete-review-${book.id}`).addEventListener('click', () => {
+            //     book.review = 'none'
+            //     currentBook.reviews.splice(currentBook.reviews.indexOf({
+            //         user: currentUser.username,
+            //         reviewContent: book.review,
+            //         rating: book.ownRating
+            //     }), 1);
+            //     handlePostPatch('books', 'POST', currentBook, updateBookCallback)
+            //     handlePostPatch('users', 'POST', currentUser, updateUserCallback)
+            // })
             li.appendChild(bookReview)
         }
         if (id === 'wishList') {
@@ -667,8 +689,23 @@ function renderUserLists(books, id, divId) {
             handleGet(`http://localhost:3000/books/${book.id}`, updateBookCallback)
         })
         ul.appendChild(li)
+        if (id === 'readList' && book.review !== 'none') {
+            document.getElementById(`delete-review-${book.id}`).addEventListener('click', () => {
+                book.review = 'none'
+                if (currentBook !== undefined && currentBook.id === book.id) {
+                    currentBook.reviews.splice(currentBook.reviews.indexOf({
+                        user: currentUser.username,
+                        reviewContent: book.review,
+                        rating: book.ownRating
+                    }), 1);
+                    handlePostPatch('books', 'PATCH', currentBook, updateBookCallback)
+                } else {
+                    function getCallback()
+                }
+                handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
+            })
+        }
     })
-    document.getElementById(divId).appendChild(ul)
     if (currentBook !== undefined) {
         renderDetailedBook(currentBook)
     }
