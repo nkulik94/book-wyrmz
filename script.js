@@ -658,16 +658,6 @@ function renderUserLists(books, id, divId) {
             const bookReview = document.createElement('p')
             bookReview.innerHTML = review
             bookReview.className = 'user-review'
-            // document.getElementById(`delete-review-${book.id}`).addEventListener('click', () => {
-            //     book.review = 'none'
-            //     currentBook.reviews.splice(currentBook.reviews.indexOf({
-            //         user: currentUser.username,
-            //         reviewContent: book.review,
-            //         rating: book.ownRating
-            //     }), 1);
-            //     handlePostPatch('books', 'POST', currentBook, updateBookCallback)
-            //     handlePostPatch('users', 'POST', currentUser, updateUserCallback)
-            // })
             li.appendChild(bookReview)
         }
         if (id === 'wishList') {
@@ -700,7 +690,18 @@ function renderUserLists(books, id, divId) {
                     }), 1);
                     handlePostPatch('books', 'PATCH', currentBook, updateBookCallback)
                 } else {
-                    function getCallback()
+                    function getCallback(data) {
+                        data.reviews.splice(data.reviews.indexOf({
+                            user: currentUser.username,
+                            reviewContent: book.review,
+                            rating: book.ownRating
+                        }), 1)
+                        function postCallback(data) {
+                            return data
+                        }
+                        handlePostPatch(`books`, 'PATCH', data, postCallback)
+                    }
+                    handleGet(`http://localhost:3000/books/${book.id}`, getCallback)
                 }
                 handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
             })
