@@ -674,6 +674,12 @@ function renderUserLists(books, id, divId) {
             addToRead.id = `make-read-book-${book.id}`
             addToRead.textContent = 'Add this book to your read list'
             li.appendChild(addToRead)
+            addToRead.addEventListener('click', () => {
+                currentUser.wishList.splice(currentUser.wishList.indexOf(book), 1)
+                currentUser.readList.push(book)
+                updateBookFromUserEnd('wantToRead', book.id, currentUser.username, true)
+                handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
+            })
             const removeBook = document.createElement('button')
             removeBook.id = `remove-book-${book.id}`
             removeBook.textContent = 'Remove this book'
@@ -681,7 +687,7 @@ function renderUserLists(books, id, divId) {
             li.appendChild(removeBook)
             removeBook.addEventListener('click', () => {
                 currentUser.wishList.splice(currentUser.wishList.indexOf(book), 1)
-                updateBookFromUserEnd('wantToRead', book, currentUser.username)
+                updateBookFromUserEnd('wantToRead', book.id, currentUser.username, false)
                 handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
             })
         }
@@ -696,7 +702,7 @@ function renderUserLists(books, id, divId) {
         if (id === 'readList' && book.review !== 'none') {
             document.getElementById(`delete-review-${book.id}`).addEventListener('click', () => {
                 book.review = 'none'
-                updateBookFromUserEnd('reviews', book, {user: currentUser.username, reviewContent: book.review, rating: book.ownRating})
+                updateBookFromUserEnd('reviews', book.id, {user: currentUser.username, reviewContent: book.review, rating: book.ownRating}, false)
                 handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
             })
         }
@@ -706,18 +712,24 @@ function renderUserLists(books, id, divId) {
     }
 }
 
-function updateBookFromUserEnd(arr, book, content) {
-    if (currentBook !== undefined && currentBook.id === book.id) {
-        currentBook[arr].splice(currentBook[arr].indexOf(content), 1);
+function updateBookFromUserEnd(arr, id, content, booleen) {
+    if (currentBook !== undefined && currentBook.id === id) {
+        currentBook[arr].splice(currentBook[arr].indexOf(content), 1)
+        if (booleen === true) {
+            currentBook.readBy.push(content)
+        }
         handlePostPatch('books', 'PATCH', currentBook, updateBookCallback)
     } else {
         function getCallback(data) {
             data[arr].splice(data[arr].indexOf(content), 1)
+            if (booleen === true) {
+                data.readBy.push(content)
+            }
             function postCallback(data) {
                 return data
             }
             handlePostPatch(`books`, 'PATCH', data, postCallback)
         }
-        handleGet(`http://localhost:3000/books/${book.id}`, getCallback)
+        handleGet(`http://localhost:3000/books/${id}`, getCallback)
     }
 }
