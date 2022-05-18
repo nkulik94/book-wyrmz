@@ -234,7 +234,10 @@ function renderDetailedBook(bookObj) {
         document.getElementById('full-details').remove()
     }
 
-    const userBook = currentUser.readList.find(book => book.id === currentBook.id)
+    let userBook 
+    if (currentUser !== undefined) {
+        userBook = currentUser.readList.find(book => book.id === currentBook.id)
+    }
     
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
@@ -260,7 +263,7 @@ function renderDetailedBook(bookObj) {
     
     const rating = document.createElement('h5')
     rating.id = 'rating'
-    currentBook.rating.average === 'none' ? rating.textContent = 'Average Rating: This book has not been rated by any Book Wyrms' : rating.textContent = `Average Rating: ${currentBook.rating.average} out of 5`
+    currentBook.rating.average === 'none' ? rating.textContent = 'This book has not been rated by any Book Wyrms' : rating.textContent = `This book has been given an average rating of ${currentBook.rating.average} out of 5 by ${currentBook.rating.allRatings.length} Book Wyrm(s)`
     fullDetails.appendChild(rating)
     
     fullDetails.appendChild(document.createElement('br'))
@@ -338,9 +341,6 @@ function renderDetailedBook(bookObj) {
         bookDetailEventCallback('readBy', 'readList', 'read')
         }
     })
-    if (currentUser !== undefined && userBook !== undefined) {
-        markRead.disabled = true
-    }
     
     const toRead = document.createElement('button')
     toRead.id = 'to-read'
@@ -354,6 +354,10 @@ function renderDetailedBook(bookObj) {
         bookDetailEventCallback('wantToRead', 'wishList', 'unread')
         }
     })
+    if (userBook !== undefined) {
+        markRead.disabled = true
+        toRead.disabled = true
+    }
     if (currentUser !== undefined && currentUser.wishList.find(book => book.id === currentBook.id) !== undefined) {
         toRead.disabled = true
     }
@@ -372,7 +376,6 @@ function renderDetailedBook(bookObj) {
     reviewForm.addEventListener('submit', (e) => {
         e.preventDefault()
         const newReview = document.getElementById('review-content')
-        //const userBook = currentUser.readList.find(book => book.id === currentBook.id)
         const reviewObj = {
             user: currentUser.username,
             reviewContent: newReview.value,
@@ -416,6 +419,26 @@ function renderDetailedBook(bookObj) {
     if (userBook !== undefined && userBook.review !== 'none') {
         reviewBtn.disabled = true
     }
+
+    fullDetails.appendChild(document.createElement('br'))
+
+    const reviewList = document.createElement('ul')
+    reviewList.id = 'review-list'
+    if (currentBook.reviews.length > 0) {
+        currentBook.reviews.map(review => {
+            const li = document.createElement('li')
+            li.className = 'reviews'
+            li.innerHTML = `
+                <h5>${review.user}</h5>
+                <p>Gave a rating of ${review.rating} out of 5</p>
+                <br>
+                <h5>Review:</h5>
+                <p class="review-body">${review.reviewContent}</p>
+            `
+            reviewList.appendChild(li)
+        })
+    }
+    fullDetails.appendChild(reviewList)
 }
 
 function rateReviewBtnCallbacks(form, errorMsg) {

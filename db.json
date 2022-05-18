@@ -20,6 +20,22 @@
           "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
           "ownRating": 5,
           "review": "great book"
+        },
+        {
+          "id": 3,
+          "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
+          "ownRating": 5,
+          "review": "great book"
+        },
+        {
+          "id": 4,
+          "cover": "https://covers.openlibrary.org/b/id/6301460-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Toll the Hounds (Malazan Book 8) (Malazan Book of the Fallen)",
+          "ownRating": "none",
+          "review": "none"
         }
       ],
       "wishList": [],
@@ -88,6 +104,57 @@
         "Malazan Book of the Fallen (2)"
       ],
       "id": 2
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
+      "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
+      "publisher": "Tor Books",
+      "publishDate": "October 20, 2005",
+      "olKey": "/books/OL8053597M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "great book",
+          "rating": 5
+        }
+      ],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (3)"
+      ],
+      "id": 3
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/6301460-M.jpg",
+      "title": "Toll the Hounds (Malazan Book 8) (Malazan Book of the Fallen)",
+      "publisher": "Bantam",
+      "publishDate": "May 19, 2009",
+      "olKey": "/books/OL24085608M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [],
+        "total": "none",
+        "average": "none"
+      },
+      "reviews": [],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "id": 4
     }
   ]
 }
