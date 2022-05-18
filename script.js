@@ -638,6 +638,17 @@ function renderUserLists(books, id, divId) {
             bookRating.textContent = `${rating}`
             li.appendChild(bookRating)
         }
+        if (id === 'wishList') {
+            const addToRead = document.createElement('button')
+            addToRead.id = `make-read-book-${book.id}`
+            addToRead.textContent = 'Add this book to your read list'
+            li.appendChild(addToRead)
+            const removeBook = document.createElement('button')
+            removeBook.id = `remove-book-${book.id}`
+            removeBook.textContent = 'Remove this book'
+            removeBook.style.margin = '3px'
+            li.appendChild(removeBook)
+        }
         const button = document.createElement('button')
         button.id = `details-for-book-${book.id}`
         button.textContent = 'See more about this book'
