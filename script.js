@@ -679,6 +679,13 @@ function renderUserLists(books, id, divId) {
             removeBook.textContent = 'Remove this book'
             removeBook.style.margin = '3px'
             li.appendChild(removeBook)
+            removeBook.addEventListener('click', () => {
+                currentUser.wishList.splice(currentUser.wishList.indexOf(book), 1)
+                if (currentBook !== undefined && currentBook.id === book.id) {
+
+                }
+                handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
+            })
         }
         const button = document.createElement('button')
         button.id = `details-for-book-${book.id}`
@@ -691,32 +698,28 @@ function renderUserLists(books, id, divId) {
         if (id === 'readList' && book.review !== 'none') {
             document.getElementById(`delete-review-${book.id}`).addEventListener('click', () => {
                 book.review = 'none'
-                if (currentBook !== undefined && currentBook.id === book.id) {
-                    currentBook.reviews.splice(currentBook.reviews.indexOf({
-                        user: currentUser.username,
-                        reviewContent: book.review,
-                        rating: book.ownRating
-                    }), 1);
-                    handlePostPatch('books', 'PATCH', currentBook, updateBookCallback)
-                } else {
-                    function getCallback(data) {
-                        data.reviews.splice(data.reviews.indexOf({
-                            user: currentUser.username,
-                            reviewContent: book.review,
-                            rating: book.ownRating
-                        }), 1)
-                        function postCallback(data) {
-                            return data
-                        }
-                        handlePostPatch(`books`, 'PATCH', data, postCallback)
-                    }
-                    handleGet(`http://localhost:3000/books/${book.id}`, getCallback)
-                }
+                updateBookFromUserEnd('reviews', book, {user: currentUser.username, reviewContent: book.review, rating: book.ownRating})
                 handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
             })
         }
     })
     if (currentBook !== undefined) {
         renderDetailedBook(currentBook)
+    }
+}
+
+function updateBookFromUserEnd(arr, book, content) {
+    if (currentBook !== undefined && currentBook.id === book.id) {
+        currentBook[arr].splice(currentBook[arr].indexOf(content), 1);
+        handlePostPatch('books', 'PATCH', currentBook, updateBookCallback)
+    } else {
+        function getCallback(data) {
+            data[arr].splice(data[arr].indexOf(content), 1)
+            function postCallback(data) {
+                return data
+            }
+            handlePostPatch(`books`, 'PATCH', data, postCallback)
+        }
+        handleGet(`http://localhost:3000/books/${book.id}`, getCallback)
     }
 }

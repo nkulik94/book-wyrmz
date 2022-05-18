@@ -1,6 +1,82 @@
 {
   "users": [
+    {
+      "name": "Naftali Kulik",
+      "username": "nkulik",
+      "password": "nkulik",
+      "readList": [
+        {
+          "id": 2,
+          "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
+          "ownRating": 5,
+          "review": "none"
+        }
+      ],
+      "wishList": [
+        {
+          "id": 1,
+          "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+          "author": "Steven Erikson",
+          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+          "ownRating": "none",
+          "review": "none"
+        }
+      ],
+      "id": 1
+    }
   ],
   "books": [
+    {
+      "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+      "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+      "publisher": "Tor Books",
+      "publishDate": "August 22, 2006",
+      "olKey": "/books/OL8053478M",
+      "readBy": [],
+      "wantToRead": [
+        "nkulik",
+        "nkulik",
+        "nkulik"
+      ],
+      "rating": {
+        "allRatings": [],
+        "total": "none",
+        "average": "none"
+      },
+      "reviews": [],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (4)"
+      ],
+      "id": 1
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/524668-M.jpg",
+      "title": "Memories of Ice (The Malazan Book of the Fallen, Book 3)",
+      "publisher": "Tor Books",
+      "publishDate": "October 20, 2005",
+      "olKey": "/books/OL8053597M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [],
+      "author": "Steven Erikson",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "Malazan Book of the Fallen (3)"
+      ],
+      "id": 2
+    }
   ]
 }
