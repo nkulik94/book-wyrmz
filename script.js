@@ -602,6 +602,7 @@ function renderBasicUserInfo(user) {
         document.getElementById('login').style.display = ''
         div.remove()
         currentUser = undefined
+        renderDetailedBook(currentBook)
         return currentUser
     })
 }
@@ -618,14 +619,6 @@ function renderUserLists(books, id, divId) {
         book.ownRating === 'none' ? rating = 'You have not yet rated this book' : rating = `You have given this book a rating of ${book.ownRating} out of 5`
         const li = document.createElement('li')
         li.className = `li-for-${id}`
-        // li.innerHTML = `
-        //     <img src="${cover}">
-        //     <h4>${book.title}</h4>
-        //     <p>${book.author}</p>
-        //     <br>
-        //     <p>${rating}</p>
-        //     <button id="details-for-${book.title}">See more about this book</button>
-        // `
         const bookCover = document.createElement('img')
         bookCover.src = `${cover}`
         li.appendChild(bookCover)
@@ -637,6 +630,12 @@ function renderUserLists(books, id, divId) {
             const bookRating = document.createElement('p')
             bookRating.textContent = `${rating}`
             li.appendChild(bookRating)
+            let review
+            book.review === 'none' ? review = '<p>You have not reviewed this book</p>' : review = `<h5>Your Review:</h5><p>${book.review}</p><br><button id="delete-review-${book.id}">Delete this review</button>`
+            const bookReview = document.createElement('p')
+            bookReview.innerHTML = review
+            bookReview.className = 'user-review'
+            li.appendChild(bookReview)
         }
         if (id === 'wishList') {
             const addToRead = document.createElement('button')
@@ -653,6 +652,14 @@ function renderUserLists(books, id, divId) {
         button.id = `details-for-book-${book.id}`
         button.textContent = 'See more about this book'
         li.appendChild(button)
+        button.addEventListener('click', () => {
+            function callback(book) {
+                currentBook = book
+                renderDetailedBook(currentBook)
+                return currentBook
+            }
+            handleGet(`http://localhost:3000/books/${book.id}`, callback)
+        })
         ul.appendChild(li)
     })
     document.getElementById(divId).appendChild(ul)

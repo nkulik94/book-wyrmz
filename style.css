@@ -25,6 +25,7 @@ li {
     padding-top: 5px;
     padding-bottom: 5px;
     margin: 5px;
+    overflow: auto;
 }
 
 #book-details {
@@ -68,4 +69,10 @@ select {
 #error {
     background-color: red;
     color: white;
+}
+
+.user-review {
+    border: 1px solid black;
+    margin-left: 10px;
+    margin-right: 10px;
 }

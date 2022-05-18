@@ -34,8 +34,16 @@
           "cover": "https://covers.openlibrary.org/b/id/6301460-M.jpg",
           "author": "Steven Erikson",
           "title": "Toll the Hounds (Malazan Book 8) (Malazan Book of the Fallen)",
-          "ownRating": "none",
-          "review": "none"
+          "ownRating": 5,
+          "review": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        {
+          "id": 6,
+          "cover": "https://covers.openlibrary.org/b/id/5359267-M.jpg",
+          "author": "Steven Erikson.",
+          "title": "Toll the hounds",
+          "ownRating": 5,
+          "review": "aaaaa aaaaa aaaa aaaaaa aaaaaa aaaaaaaa aaaaaaaaa aaaaaaa aaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaa aa"
         }
       ],
       "wishList": [
@@ -199,11 +207,19 @@
       ],
       "wantToRead": [],
       "rating": {
-        "allRatings": [],
-        "total": "none",
-        "average": "none"
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
       },
-      "reviews": [],
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "rating": 5
+        }
+      ],
       "author": "Steven Erikson",
       "description": "Sorry, there is no description available for this book",
       "id": 4
@@ -227,6 +243,37 @@
       "author": "Suzanne Collins.",
       "description": "When eleven-year-old Gregor and his two-year-old sister are pulled into a strange underground world, they trigger an epic battle involving men, bats, rats, cockroaches, and spiders while on a quest foretold by ancient prophecy.",
       "id": 5
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/5359267-M.jpg",
+      "title": "Toll the hounds",
+      "publisher": "Tor",
+      "publishDate": "2008",
+      "olKey": "/books/OL16960660M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "aaaaa aaaaa aaaa aaaaaa aaaaaa aaaaaaaa aaaaaaaaa aaaaaaa aaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaa aa",
+          "rating": 5
+        }
+      ],
+      "author": "Steven Erikson.",
+      "description": "Sorry, there is no description available for this book",
+      "series": [
+        "The Malazan book of the fallen -- bk. 8"
+      ],
+      "id": 6
     }
   ]
 }
