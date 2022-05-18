@@ -681,9 +681,7 @@ function renderUserLists(books, id, divId) {
             li.appendChild(removeBook)
             removeBook.addEventListener('click', () => {
                 currentUser.wishList.splice(currentUser.wishList.indexOf(book), 1)
-                if (currentBook !== undefined && currentBook.id === book.id) {
-
-                }
+                updateBookFromUserEnd('wantToRead', book, currentUser.username)
                 handlePostPatch('users', 'PATCH', currentUser, updateUserCallback)
             })
         }
