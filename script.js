@@ -152,7 +152,7 @@ function pageButton(pages, id, list) {
         nextButton.disabled = false
     })
     backButton.disabled = true
-    if (document.getElementsByClassName(`${list}-previous-btns`).length === 0) {
+    if (document.getElementsByClassName(`${list}-next-btns`).length === 0) {
         nextButton.disabled = true
     }
 }
@@ -495,10 +495,11 @@ function fetchUsers(user, i, method) {
     .then((res) => {
         if (res.length === 1 && res[0].password !== user.password) {
             error(method)
-        }
+        } else {
         let userArg
         res.length === 1 ? userArg = res[0] : userArg = user
         res.length === i ? success(userArg, method) : error(method)
+        }
     })
 }
 

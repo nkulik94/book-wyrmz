@@ -48,6 +48,32 @@
       "readList": [],
       "wishList": [],
       "id": 2
+    },
+    {
+      "name": "naftali kulik",
+      "username": "nkulik94",
+      "password": "nkulik",
+      "readList": [
+        {
+          "id": 1,
+          "cover": "https://covers.openlibrary.org/b/id/524440-M.jpg",
+          "author": "Steven Erikson",
+          "title": "House of Chains (The Malazan Book of the Fallen, Book 4)",
+          "ownRating": 5,
+          "review": "great book"
+        }
+      ],
+      "wishList": [
+        {
+          "id": 2,
+          "cover": "https://covers.openlibrary.org/b/id/6680652-M.jpg",
+          "author": "Steven Erikson",
+          "title": "Deadhouse Gates (The Malazan Book of the Fallen, Book 2)",
+          "ownRating": "none",
+          "review": "none"
+        }
+      ],
+      "id": 3
     }
   ],
   "books": [
@@ -58,19 +84,26 @@
       "publishDate": "August 22, 2006",
       "olKey": "/books/OL8053478M",
       "readBy": [
-        "nkulik"
+        "nkulik",
+        "nkulik94"
       ],
       "wantToRead": [],
       "rating": {
         "allRatings": [
+          5,
           5
         ],
-        "total": 5,
+        "total": 10,
         "average": 5
       },
       "reviews": [
         {
           "user": "nkulik",
+          "reviewContent": "great book",
+          "rating": 5
+        },
+        {
+          "user": "nkulik94",
           "reviewContent": "great book",
           "rating": 5
         }
@@ -91,7 +124,9 @@
       "readBy": [
         "nkulik"
       ],
-      "wantToRead": [],
+      "wantToRead": [
+        "nkulik94"
+      ],
       "rating": {
         "allRatings": [
           5
