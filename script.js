@@ -321,7 +321,7 @@ function renderDetailedBook(bookObj) {
         const newRating = document.getElementById('new-rating')
         currentBook.rating.allRatings.push(parseInt(newRating.value, 10))
         currentBook.rating.total === 'none' ? currentBook.rating.total = parseInt(newRating.value, 10) : currentBook.rating.total += parseInt(newRating.value, 10)
-        currentBook.rating.average = Math.round(currentBook.rating.total / currentBook.rating.allRatings.length)
+        currentBook.rating.average = Math.round((currentBook.rating.total / currentBook.rating.allRatings.length) * 10) / 10
         function callback(book) {
             currentBook = book
             if (userBook === undefined) {
