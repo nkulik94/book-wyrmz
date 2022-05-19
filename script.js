@@ -49,7 +49,7 @@ function handlePostPatch(source, method, obj, fnc) {
 //generic callback function to update current book
 function updateBookCallback(book) {
     currentBook = book
-    renderDetailedBook(currentBook)
+    renderDetailedBook()
     return currentBook
 }
 
@@ -187,7 +187,7 @@ function getBookDetailsFromLocal(olUrl, key) {
     function callback(book) {
         if (book.length !== 0 && book[0].olKey === key) {
             currentBook = book[0]
-            renderDetailedBook(currentBook)
+            renderDetailedBook()
             return currentBook
         } else {
             getBookDetailsFromOl(olUrl)
@@ -223,7 +223,7 @@ function getBookDetailsFromOl(url) {
         if (book.series !== undefined) {
             currentBook.series = book.series
         }
-        renderDetailedBook(currentBook)
+        renderDetailedBook()
         return currentBook
     }
     handleGet(url, callback)
@@ -250,7 +250,7 @@ function renderBookResults(book) {
     })
 }
 
-function renderDetailedBook(bookObj) {
+function renderDetailedBook() {
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
     }
@@ -265,20 +265,20 @@ function renderDetailedBook(bookObj) {
     const fullDetails = document.createElement('div')
     fullDetails.id = 'full-details'
     let series
-    bookObj.series === undefined ? series = 'N/A' : series = bookObj.series
+    currentBook.series === undefined ? series = 'N/A' : series = currentBook.series
     
     fullDetails.innerHTML = `
-        <img class="float" src="${bookObj.cover}" alt="Cover for ${bookObj.title}">
-        <h2>${bookObj.title}</h2>
-        <h4>By ${bookObj.author}</h4>
-        <h5>Published by: ${bookObj.publisher}</h5>
-        <h5>Published: ${bookObj.publishDate}</h5>
+        <img class="float" src="${currentBook.cover}" alt="Cover for ${currentBook.title}">
+        <h2>${currentBook.title}</h2>
+        <h4>By ${currentBook.author}</h4>
+        <h5>Published by: ${currentBook.publisher}</h5>
+        <h5>Published: ${currentBook.publishDate}</h5>
         <br>
         <p>Series: ${series}</p>
         <br>
         <p>Description:
         <br>
-        ${bookObj.description}</p>
+        ${currentBook.description}</p>
     `
     document.getElementById('book-details').appendChild(fullDetails)
     
@@ -363,7 +363,7 @@ function renderDetailedBook(bookObj) {
             errorMsg.style.display = ''
             setTimeout(() => errorMsg.style.display = 'none', 3000)
         } else {
-        bookDetailEventCallback('readBy', 'readList', userWishBook, 'read')
+        bookDetailEventCallback('readBy', 'readList', userWishBook)
         }
     })
     
@@ -376,7 +376,7 @@ function renderDetailedBook(bookObj) {
             errorMsg.style.display = ''
             setTimeout(() => errorMsg.style.display = 'none', 3000)
         } else {
-        bookDetailEventCallback('wantToRead', 'wishList', userWishBook, 'unread')
+        bookDetailEventCallback('wantToRead', 'wishList', userWishBook)
         }
     })
     if (userBook !== undefined) {
@@ -475,19 +475,18 @@ function rateReviewBtnCallbacks(form, errorMsg) {
     }
 }
 
-function bookDetailEventCallback(bookList, userList, wishBook, id) {
+function bookDetailEventCallback(bookList, userList, wishBook) {
     function postPatchCallback(book) {
         currentBook = book
-        renderDetailedBook(book)
+        renderDetailedBook()
         if (userList === 'readList' && wishBook !== undefined) {
             currentUser.wishList.splice(currentUser.wishList.indexOf(wishBook), 1)
         }
-        function callback(user) {
-            //renderUserLists(user[userList], userList, id)
-            updateUserCallback(user)
-        }
+        // function callback(user) {
+        //     updateUserCallback(user)
+        // }
         currentUser[userList].push(new ReadBook('none', 'none'))
-        handlePostPatch('users', "PATCH", currentUser, callback)
+        handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
         return currentBook
     }
     if (currentUser !== undefined) {

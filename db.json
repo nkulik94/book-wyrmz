@@ -28,6 +28,14 @@
           "title": "Harry Potter and the Chamber of Secrets",
           "ownRating": "none",
           "review": "none"
+        },
+        {
+          "id": 7,
+          "cover": "https://covers.openlibrary.org/b/id/10335189-M.jpg",
+          "author": "Suzanne Collins.",
+          "title": "Gregor the Overlander",
+          "ownRating": "none",
+          "review": "none"
         }
       ],
       "wishList": [],
@@ -215,6 +223,26 @@
       "author": "Andrew Clements ; pictures by Brian Selznick.",
       "description": "When he decides to turn his fifth grade teacher's love of the dictionary around on her, clever Nick Allen invents a new word and begins a chain of events that quickly moves beyond his control.",
       "id": 6
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/10335189-M.jpg",
+      "title": "Gregor the Overlander",
+      "publisher": "Scholastic Press",
+      "publishDate": "2003",
+      "olKey": "/books/OL3578196M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [],
+        "total": "none",
+        "average": "none"
+      },
+      "reviews": [],
+      "author": "Suzanne Collins.",
+      "description": "When eleven-year-old Gregor and his two-year-old sister are pulled into a strange underground world, they trigger an epic battle involving men, bats, rats, cockroaches, and spiders while on a quest foretold by ancient prophecy.",
+      "id": 7
     }
   ]
 }
