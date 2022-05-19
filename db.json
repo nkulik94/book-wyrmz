@@ -32,6 +32,32 @@
       ],
       "wishList": [],
       "id": 1
+    },
+    {
+      "name": "chavi",
+      "username": "chavi",
+      "password": "chavi",
+      "readList": [
+        {
+          "id": 5,
+          "cover": "https://covers.openlibrary.org/b/id/433572-M.jpg",
+          "author": "Judith Viorst ; illustrated by Ray Cruz.",
+          "title": "Alexander and the terrible, horrible, no good, very bad day",
+          "ownRating": 3,
+          "review": "none"
+        }
+      ],
+      "wishList": [
+        {
+          "id": 6,
+          "cover": "https://covers.openlibrary.org/b/id/434060-M.jpg",
+          "author": "Andrew Clements ; pictures by Brian Selznick.",
+          "title": "Frindle",
+          "ownRating": "none",
+          "review": "none"
+        }
+      ],
+      "id": 2
     }
   ],
   "books": [
@@ -128,6 +154,48 @@
         "Harry Potter #2"
       ],
       "id": 4
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/433572-M.jpg",
+      "title": "Alexander and the terrible, horrible, no good, very bad day",
+      "publisher": "Aladdin Paperbacks",
+      "publishDate": "1987",
+      "olKey": "/books/OL2373033M",
+      "readBy": [
+        "chavi"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          3
+        ],
+        "total": 3,
+        "average": 3
+      },
+      "reviews": [],
+      "author": "Judith Viorst ; illustrated by Ray Cruz.",
+      "description": "On a day when everything goes wrong for him, Alexander is consoled by the thought that other people have bad days too.",
+      "id": 5
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/434060-M.jpg",
+      "title": "Frindle",
+      "publisher": "Simon & Schuster Books for Young Readers",
+      "publishDate": "1996",
+      "olKey": "/books/OL794027M",
+      "readBy": [],
+      "wantToRead": [
+        "chavi"
+      ],
+      "rating": {
+        "allRatings": [],
+        "total": "none",
+        "average": "none"
+      },
+      "reviews": [],
+      "author": "Andrew Clements ; pictures by Brian Selznick.",
+      "description": "When he decides to turn his fifth grade teacher's love of the dictionary around on her, clever Nick Allen invents a new word and begins a chain of events that quickly moves beyond his control.",
+      "id": 6
     }
   ]
 }

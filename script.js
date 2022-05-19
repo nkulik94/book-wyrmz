@@ -7,6 +7,7 @@ const searchBy = document.getElementById('param')
 const searchInput = document.querySelector('#search-input')
 document.getElementById('create-error').style.display = 'none'
 document.getElementById('login-error').style.display = 'none'
+//config object to simplify POST/PATCH requests
 class Config {
     constructor(method, body) {
         this.method = method,
@@ -17,7 +18,7 @@ class Config {
         this.body = JSON.stringify(body)
     }
 }
-
+//class to construct book object for user lists
 class ReadBook {
     constructor(rating, review) {
         this.id = currentBook.id,
@@ -45,14 +46,14 @@ function handlePostPatch(source, method, obj, fnc) {
     .then(res => fnc(res))
 }
 
-//generic function to update current book
+//generic callback function to update current book
 function updateBookCallback(book) {
     currentBook = book
     renderDetailedBook(currentBook)
     return currentBook
 }
 
-//generic function to update user
+//generic callback function to update user
 function updateUserCallback(user) {
     currentUser = user
     renderBasicUserInfo(currentUser)
@@ -74,9 +75,11 @@ function toggleForms(e) {
     }
 }
 
-
+//event listener for submiting search parameters and returning results
 searchForm.addEventListener('submit', e => {
     e.preventDefault()
+    
+    // Removes previous search results and buttons if applicable
     if (document.getElementById('results-header') !== null) {
         document.getElementById('results-header').remove()
     }
@@ -86,6 +89,8 @@ searchForm.addEventListener('submit', e => {
         Array.from(document.getElementsByClassName('search-next-btns')).map(btn => btn.remove())
         Array.from(document.getElementsByClassName('search-previous-btns')).map(btn => btn.remove())
     }
+    
+    
     h3 = document.createElement('h3')
     h3.className = searchInput.value.split(' ').join('-')
     h3.id = 'results-header'
@@ -97,30 +102,30 @@ searchForm.addEventListener('submit', e => {
 
 function getBooks(offset) {
     const searchFor = document.getElementById('results-header').className.split('-').join('+')
-    fetch(`http://openlibrary.org/search.json?${searchBy.value}=${searchFor}&limit=10&offset=${offset}`)
-    .then(res => res.json())
-    .then(books => {
+    handleGet(`http://openlibrary.org/search.json?${searchBy.value}=${searchFor}&limit=10&offset=${offset}`, getBooksCallback)
+}
 
-        // Code to create and activate buttons for page numbers
-        let pages = Math.ceil(books.numFound / 10)
-        if (pages > 1 && document.getElementsByClassName('search-active-btns').length === 0) {
-            pageButton(pages, 'book-search', 'search')
-        }
+function getBooksCallback(books) {
+    let searchResults
+    searchResults = document.getElementById('search-results')
+    if (searchResults !== null) {
+        searchResults.remove()
+    }
+
+    // Code to create and activate buttons for page numbers
+    let pages = Math.ceil(books.numFound / 10)
+    if (pages > 1 && document.getElementsByClassName('search-active-btns').length === 0) {
+        pageButton(pages, 'book-search', 'search')
+    }
 
 
-        let searchResults
-        searchResults = document.getElementById('search-results')
-        if (searchResults !== null) {
-            searchResults.remove()
-        }
-        searchResults = document.createElement('div')
-        searchResults.id = 'search-results'
-        const ul = document.createElement('ul')
-        ul.id = 'result-list'
-        searchResults.appendChild(ul)
-        document.getElementById('book-search').appendChild(searchResults)
-        books.docs.map(book => renderBookResults(book))
-    })
+    searchResults = document.createElement('div')
+    searchResults.id = 'search-results'
+    const ul = document.createElement('ul')
+    ul.id = 'result-list'
+    searchResults.appendChild(ul)
+    document.getElementById('book-search').appendChild(searchResults)
+    books.docs.map(book => renderBookResults(book))
 }
 
 function pageButton(pages, id, list) {
