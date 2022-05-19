@@ -250,6 +250,9 @@ function renderBookResults(book) {
     })
 }
 
+
+//The Big One. Renders detailed book info to the middle of the page.
+// Is called any time currentBook is updated
 function renderDetailedBook() {
     if (document.getElementById('full-details') !== null) {
         document.getElementById('full-details').remove()
@@ -482,9 +485,6 @@ function bookDetailEventCallback(bookList, userList, wishBook) {
         if (userList === 'readList' && wishBook !== undefined) {
             currentUser.wishList.splice(currentUser.wishList.indexOf(wishBook), 1)
         }
-        // function callback(user) {
-        //     updateUserCallback(user)
-        // }
         currentUser[userList].push(new ReadBook('none', 'none'))
         handlePostPatch('users', "PATCH", currentUser, updateUserCallback)
         return currentBook

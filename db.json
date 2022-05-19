@@ -36,6 +36,22 @@
           "title": "Gregor the Overlander",
           "ownRating": "none",
           "review": "none"
+        },
+        {
+          "id": 3,
+          "cover": "https://covers.openlibrary.org/b/id/10521270-M.jpg",
+          "author": "J. K. Rowling.",
+          "title": "Harry Potter and the Philosopher's Stone",
+          "ownRating": 2,
+          "review": "none"
+        },
+        {
+          "id": 8,
+          "cover": "https://covers.openlibrary.org/b/id/12646545-M.jpg",
+          "author": "Suzanne Collins",
+          "title": "The Hunger Games",
+          "ownRating": 5,
+          "review": "great book, a bit disturbing"
         }
       ],
       "wishList": [],
@@ -83,6 +99,23 @@
       ],
       "wishList": [],
       "id": 3
+    },
+    {
+      "name": "naftali kulik",
+      "username": "nkulik94",
+      "password": "nkulik",
+      "readList": [
+        {
+          "id": 3,
+          "cover": "https://covers.openlibrary.org/b/id/10521270-M.jpg",
+          "author": "J. K. Rowling.",
+          "title": "Harry Potter and the Philosopher's Stone",
+          "ownRating": 5,
+          "review": "classic"
+        }
+      ],
+      "wishList": [],
+      "id": 4
     }
   ],
   "books": [
@@ -144,14 +177,26 @@
       "publisher": "Bloomsbury",
       "publishDate": "1998",
       "olKey": "/books/OL22856696M",
-      "readBy": [],
+      "readBy": [
+        "nkulik94",
+        "nkulik"
+      ],
       "wantToRead": [],
       "rating": {
-        "allRatings": [],
-        "total": "none",
-        "average": "none"
+        "allRatings": [
+          5,
+          2
+        ],
+        "total": 7,
+        "average": 3.5
       },
-      "reviews": [],
+      "reviews": [
+        {
+          "user": "nkulik94",
+          "reviewContent": "classic",
+          "rating": 5
+        }
+      ],
       "author": "J. K. Rowling.",
       "description": "Rescued from the outrageous neglect of his aunt and uncle, a young boy with a great destiny proves his worth while attending Hogwarts School for Wizards and Witches",
       "series": [
@@ -243,6 +288,34 @@
       "author": "Suzanne Collins.",
       "description": "When eleven-year-old Gregor and his two-year-old sister are pulled into a strange underground world, they trigger an epic battle involving men, bats, rats, cockroaches, and spiders while on a quest foretold by ancient prophecy.",
       "id": 7
+    },
+    {
+      "cover": "https://covers.openlibrary.org/b/id/12646545-M.jpg",
+      "title": "The Hunger Games",
+      "publisher": "Scholastic Press",
+      "publishDate": "2008-10",
+      "olKey": "/books/OL37079411M",
+      "readBy": [
+        "nkulik"
+      ],
+      "wantToRead": [],
+      "rating": {
+        "allRatings": [
+          5
+        ],
+        "total": 5,
+        "average": 5
+      },
+      "reviews": [
+        {
+          "user": "nkulik",
+          "reviewContent": "great book, a bit disturbing",
+          "rating": 5
+        }
+      ],
+      "author": "Suzanne Collins",
+      "description": "Sorry, there is no description available for this book",
+      "id": 8
     }
   ]
 }

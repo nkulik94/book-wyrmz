@@ -76,3 +76,8 @@ select {
     margin-left: 10px;
     margin-right: 10px;
 }
+
+#filter {
+    position: absolute;
+    top: 1000px;
+}
