@@ -40,7 +40,7 @@ function handleGet(url, fnc) {
 //generic POST/PATCH function
 function handlePostPatch(source, method, obj, fnc) {
     let url
-    method === 'POST' ? url = `http://localhost:3000/${source}` : url = `http://localhost:3000/${source}/${obj.id}`
+    method === 'POST' ? url = `https://book-wyrms-1.herokuapp.com/${source}` : url = `https://book-wyrms-1.herokuapp.com/${source}/${obj.id}`
     fetch(url, new Config(method, obj))
     .then(res => res.json())
     .then(res => fnc(res))
@@ -193,7 +193,7 @@ function getBookDetailsFromLocal(olUrl, key) {
             getBookDetailsFromOl(olUrl)
         }
     }
-    handleGet(`http://localhost:3000/books?olKey=${key}`, callback)
+    handleGet(`https://book-wyrms-1.herokuapp.com/books?olKey=${key}`, callback)
 }
 
 function getBookDetailsFromOl(url) {
@@ -521,7 +521,7 @@ function logIn() {
 }
 
 function fetchUsers(user, i, method) {
-    fetch(`http://localhost:3000/users?username=${user.username}`)
+    fetch(`https://book-wyrms-1.herokuapp.com/users?username=${user.username}`)
     .then(res => res.json())
     .then((res) => {
         if (res.length === 1 && res[0].password !== user.password) {
@@ -553,10 +553,11 @@ function error(method) {
 
 function success(user, method) {
     function newUser() {
-        fetch('http://localhost:3000/users', new Config(method, user))
+        fetch('https://book-wyrms-1.herokuapp.com/users', new Config(method, user))
         .then(res => res.json())
         .then(user => {
             currentUser = user
+            console.log(user)
             renderBasicUserInfo(user)
             return currentUser
         })
@@ -711,7 +712,7 @@ function renderUserLists(books, id, divId) {
         button.textContent = 'See more about this book'
         li.appendChild(button)
         button.addEventListener('click', () => {
-            handleGet(`http://localhost:3000/books/${book.id}`, updateBookCallback)
+            handleGet(`https://book-wyrms-1.herokuapp.com/books/${book.id}`, updateBookCallback)
         })
         ul.appendChild(li)
         if (id === 'readList' && book.review !== 'none') {
@@ -745,6 +746,6 @@ function updateBookFromUserEnd(arr, id, content, booleen) {
             }
             handlePostPatch(`books`, 'PATCH', data, postCallback)
         }
-        handleGet(`http://localhost:3000/books/${id}`, getCallback)
+        handleGet(`https://book-wyrms-1.herokuapp.com/books/${id}`, getCallback)
     }
 }
